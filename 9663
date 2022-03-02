@@ -1,0 +1,40 @@
+#include <iostream>
+using namespace std;
+// 백준 9663 N-Queen
+
+// N-Queen 문제는 크기가 N × N인 체스판 위에 퀸 N개를 서로 공격할 수 없게 놓는 문제이다.
+// N이 주어졌을 때, 퀸을 놓는 방법의 수를 구하는 프로그램을 작성하시오.
+
+// 백트래킹을 이용하여 N개의 퀸을 둘 수 있는 경우 카운트를 증가시키는 방식
+int n;
+int cnt = 0;
+int board[15];
+
+int ck(int num) {
+    for (int i = 0; i < num; i++) {
+        if (board[i] == board[num] || num - i == abs(board[i] - board[num])) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void nQueen(int num) {
+    if (num == n) {
+        cnt++;
+        return;
+    }
+    // N번 반복하여 퀸의 경우의 수를 백트래킹
+    for (int i = 0; i < n; i++) {
+        board[num] = i;
+        if (ck(num)) {
+            nQueen(num + 1);
+        }
+    }
+}
+
+int main() {
+    cin >> n;
+    nQueen(0);
+    cout << cnt;
+}
