@@ -1,0 +1,47 @@
+// 백준 14889 
+#include <iostream>
+using namespace std;
+int n, result, start, link, myMin = 1000;
+int arr[21][21];
+bool isLink[21];
+void dfs(int num, int idx) {
+    // n/2만큼의 팀의 경우의 수만 알면 되므로
+    if (num == n / 2) {
+        start = 0;
+        link = 0;
+
+        // 각 팀의 능력치를 합해준다.
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (isLink[i] && isLink[j])
+                    link += arr[i][j];
+                if (!isLink[i] && !isLink[j])
+                    start += arr[i][j];
+            }
+        }
+
+        // 최솟값을 구하기 위해 절대값으로 빼준다.
+        result = abs(start - link);
+        if (result < myMin)
+            myMin = result;
+
+        return;
+    }
+
+    // dfs로 팀을 짤 수 있는 경우의 수를 찾기
+    for (int i = idx; i < n; i++) {
+        isLink[i] = true;
+        dfs(num + 1, i + 1);
+        isLink[i] = false;
+    }
+}
+
+int main() {
+    cin >> n;
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= n; j++)
+            cin >> arr[i][j];
+
+    dfs(0, 1);
+    cout << myMin;
+}
