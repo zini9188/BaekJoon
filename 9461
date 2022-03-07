@@ -1,0 +1,17 @@
+// 백준 9461 
+#include <iostream>
+using namespace std;
+
+int main() {
+    // 후반부로 갈수록 값이 매우 커지므로 longlong을 사용하여야함
+    long long int p[101] = {0, 1, 1, 1, 2, 2, 3, 4, 5, 7, 9};
+    for (int i = 11; i <= 100; i++) {
+        p[i] = p[i - 5] + p[i - 1];
+    }
+    int t, n;
+    cin >> t;
+    for (int i = 0; i < t; i++) {
+        cin >> n;
+        cout << p[n] << '\n';
+    }
+}
