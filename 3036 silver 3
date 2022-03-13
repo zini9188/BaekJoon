@@ -1,0 +1,26 @@
+// 백준 3036 링
+#include <math.h>
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    int ring[101];
+    int top;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        cin >> ring[i];
+    }
+
+    for (int i = 1; i < n; i++) {
+        top = ring[0];
+        for (int j = ring[i]; j >= 2; j--) {
+            while (ring[i] % j == 0 && top % j == 0) {
+                top /= j;
+                ring[i] /= j;
+            }
+        }
+        cout << top << "/" << ring[i] << "\n";
+    }
+}
