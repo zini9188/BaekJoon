@@ -1,0 +1,23 @@
+// 백준 11051 이항 계수2
+#include <iostream>
+using namespace std;
+
+int dp[1001][1001] = {0};
+int main() {
+    // 이항계수 구하는 법
+    // n! / k!(n-k)!
+    // (n, k) = (n-1, k -1) * (n-1, k)
+    int n;
+    int k;
+    cin >> n >> k;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 0; j <= k; j++) {
+            if (j == 0 || i == j)
+                dp[i][j] = 1;
+            else
+                dp[i][j] = (dp[i - 1][j - 1] + dp[i - 1][j]) % 10007;
+        }
+    }
+
+    cout << dp[n][k];
+}
