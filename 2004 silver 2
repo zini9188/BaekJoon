@@ -1,0 +1,32 @@
+//백준 2004 조합 0의 개
+#include <iostream>
+using namespace std;
+int n, m;
+// 5와 2로 10이 구성된다.
+// 25!의 경우 25/5 + 25/25 로 6개
+
+int mydiv(int num, int div_num) {
+    int cnt = 0;
+    if (num < div_num)  // 구하려는 값보다 작은 팩토리얼이면 0리턴
+        return 0;
+    // i가 20억보다 작아 한번 더 곱해지면 20억을 초과하므로 longlong을 사용
+    for (long long int i = div_num; i <= num; i *= div_num) {
+        cnt += num / i;
+    }
+    return cnt;
+}
+int cnt_zero(int fir, int sec) {
+    int cnt_five = 0, cnt_two = 0;
+    // nCr에서 5의 개수는 (n!의 5의 개수) - ((n-r)!의 5의 개수) - (r!의 5의 개수)
+    cnt_five = mydiv(fir, 5) - mydiv(fir - sec, 5) - mydiv(sec, 5);
+    cnt_two = mydiv(fir, 2) - mydiv(fir - sec, 2) - mydiv(sec, 2);
+    // 둘 중 최소값의 개수가 0의 개수
+    int cnt = min(cnt_five, cnt_two);
+    return cnt;
+}
+
+int main() {
+    cin >> n >> m;
+
+    cout << cnt_zero(n, m);
+}
