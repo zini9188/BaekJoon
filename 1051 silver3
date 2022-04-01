@@ -4,7 +4,6 @@ using namespace std;
 int N, M;
 int square[51][51];
 int fir, sec, thd, four;
-int size;
 int resultSize;
 string input;
 
