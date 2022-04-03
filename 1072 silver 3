@@ -1,5 +1,5 @@
 // 백준 1072 게임
-// 이분탐색을 이
+// 이분탐색을 이용
 #include <iostream>
 using namespace std;
 #define MAX 1000000000
