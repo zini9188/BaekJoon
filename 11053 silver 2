@@ -1,0 +1,24 @@
+// 백준 11053 가장 긴 증가하는 부분 수열
+
+#include <iostream>
+using namespace std;
+
+int dp[1001];
+int N;
+int arr[1001];
+int main() {
+    cin >> N;
+    for (int i = 1; i <= N; i++) {
+        cin >> arr[i];
+    }
+    int ans = 0;
+    for (int i = 1; i <= N; i++) {
+        for (int j = i - 1; j >= 1; j--) {
+            if (arr[i] > arr[j]) {
+                dp[i] = max(dp[i], dp[j] + 1);
+            }
+        }
+        ans = max(dp[i], ans);
+    }
+    cout << ans + 1;
+}
