@@ -1,0 +1,30 @@
+// 백준 1138 한 줄로 서기
+#include <iostream>
+using namespace std;
+int N;
+int left[11];
+int pos[11];
+int main() {
+    // 사람의 수 N을 입력 받는다.
+    cin >> N;
+    // 키가 1인 사람부터 차례대로 자기보다 키가 큰 사람이 왼쪽에 몇 명 있는지 입력 받는다.
+    for (int i = 1; i <= N; i++)
+        cin >> left[i];
+
+    // N명까지 차례대로 배열에 넣어준다.
+    for (int i = 1; i <= N; i++) {
+        int cnt = 0;
+        // 배열 1 ~ N까지 비교하며 0이 있으면 cnt를 증가한다.
+        for (int j = 1; j <= N; j++) {
+            // j번째 pos배열이 0이면 cnt를 증가시키고 left[i]배열과 같은 값이 되면
+            // 해당 위치에 i를 삽입한다.
+            if (pos[j] == 0) {
+                if (cnt++ == left[i])
+                    pos[j] = i;
+            }
+        }
+    }
+
+    for (int i = 1; i <= N; i++)
+        cout << pos[i] << " ";
+}
