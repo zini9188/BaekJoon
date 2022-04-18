@@ -1,0 +1,31 @@
+// 백준 1205: 등수 구하기
+#include <iostream>
+using namespace std;
+
+// 점수 N개
+// 새로운 점수 newScore
+// 리스트의 최대 개수 P
+int N, newScore, P;
+int idx = 1, cnt;
+int arr[51];
+int main() {
+    cin >> N >> newScore >> P;
+    for (int i = 0; i < N; i++)
+        cin >> arr[i];
+
+    for (int i = 0; i < N; i++) {
+        if (newScore < arr[i])
+            idx++;
+        else if (newScore == arr[i])
+            idx = idx;
+        else
+            break;
+        cnt++;
+    }
+
+    if (cnt == P)
+        idx = -1;
+    if (N == 0)
+        idx = 1;
+    cout << idx;
+}
