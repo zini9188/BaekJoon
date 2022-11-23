@@ -14,7 +14,7 @@ int main() {
     int V, E, K;
     cin >> V >> E >> K; // (정점, 간선, 시작 정점)
 
-    vector<pair<int, int>> graph[20001]; // 그래프를 저장할 map collection
+    vector<pair<int, int>> graph[20001]; // 그래프를 저장할 배열
     int u, v, w; // (u에서 v로 가는 가중치 w인 간선)
     for (int i = 0; i < E; i++) {
         cin >> u >> v >> w;
@@ -28,14 +28,15 @@ int main() {
 
     while (!pq.empty()) {
         int node = pq.top().second;
-        int dist = -pq.top().first; // 가장 아래의 값을 가져오기 위함 (이를 사용하고 싶지 않다면 pq선언에서 greast사용
+        int dist = -pq.top().first; // 현재는 오름차순으로 정렬되어 있으므로 가장 아래의 값을 가져오기 위함
         pq.pop();
 
         // 현재 노드에서 다음 정점까지의 거리 최단경로를 구하기
         for (auto item: graph[node]) {
             int nextDist = dist + item.second;
             int nextNode = item.first;
-            if (nextDist < distance[nextNode]) {
+            // 다음 노드가 저장된 다음 노드의 가중치보다 작다면 갱신한다.
+            if (nextDist < distance[nextNode]) { 
                 distance[nextNode] = nextDist;
                 pq.push(make_pair(-nextDist, nextNode));
             }
