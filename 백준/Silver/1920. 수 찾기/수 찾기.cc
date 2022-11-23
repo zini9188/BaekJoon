@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int A[100001];
+vector<int> A(100001);
 int N;
 
 int binarySearch(int target) {
@@ -28,14 +28,13 @@ int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    int x,M;
+    int x, M;
     cin >> N;
 
     for (int i = 0; i < N; i++) {
-        cin >> x;
-        A[i] = x;
+        cin >> A[i];
     }
-    sort(A, A + N);
+    sort(A.begin(), A.begin() + N);
 
     cin >> M;
     for (int i = 0; i < M; i++) {
