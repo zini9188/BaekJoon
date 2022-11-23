@@ -21,14 +21,14 @@ int main() {
         graph[u].emplace_back(v, w);
     }
 
-    priority_queue<pair<int,int>,vector<pair<int,int> >,greater< > >pq;; // <비용, 노드> 형식의 priority_queue
+    priority_queue<pair<int,int>>pq; // <비용, 노드> 형식의 priority_queue
     pq.push(make_pair(0, K)); // 처음 시작할 위치와 가중치
     vector<int> distance(V + 1, INF); // 거리의 최소를 구할 vector INF로 초기화
     distance[K] = 0; // 시작 노드에서 시작 노드로 가는 비용 0
 
     while (!pq.empty()) {
         int node = pq.top().second;
-        int dist = pq.top().first; // 가장 아래의 값을 가져오기 위함 (이를 사용하고 싶지 않다면 pq선언에서 greast사용
+        int dist = -pq.top().first; // 가장 아래의 값을 가져오기 위함 (이를 사용하고 싶지 않다면 pq선언에서 greast사용
         pq.pop();
 
         // 현재 노드에서 다음 정점까지의 거리 최단경로를 구하기
@@ -37,7 +37,7 @@ int main() {
             int nextNode = item.first;
             if (nextDist < distance[nextNode]) {
                 distance[nextNode] = nextDist;
-                pq.push(make_pair(nextDist, nextNode));
+                pq.push(make_pair(-nextDist, nextNode));
             }
         }
     }
