@@ -9,15 +9,15 @@ int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    vector<long long> share(200001);
+    vector<int> share(200001);
     int N, C;
     cin >> N >> C;
     for (int i = 0; i < N; i++) {
         cin >> share[i];
     }
     sort(share.begin(), share.begin() + N);
-    
-    long long answer = 0, left = 1, right = share[N - 1], mid, mount;
+
+    int answer = 0, left = 1, right = share[N - 1], mid, mount;
     while (left <= right) {
         mid = (left + right) / 2;
         mount = share[0];
