@@ -13,25 +13,17 @@ vector<string> answers;
 bool checkPossible(const string &word) {
     int vowel = 0, consonant = 0;
     for (auto w: word) {
-        if (find(aeiou.begin(), aeiou.end(), w) != aeiou.end()) {
-            vowel++;
-        } else {
-            consonant++;
-        }
+        if (find(aeiou.begin(), aeiou.end(), w) != aeiou.end()) vowel++;
+        else consonant++;
     }
 
-    if (vowel >= 1 && consonant >= 2) {
-        return true;
-    } else {
-        return false;
-    }
+    if (vowel >= 1 && consonant >= 2) return true;
+    else return false;
 }
 
 void dfs(int length, const string &word) {
-    if (length == L) {
-        if (checkPossible(word)) {
-            answers.push_back(word);
-        }
+    if (length == L && checkPossible(word)) {
+        answers.push_back(word);
         return;
     }
 
@@ -62,7 +54,7 @@ int main() {
 
     sort(answers.begin(), answers.end());
 
-    for(const auto& answer : answers){
+    for (const auto &answer: answers) {
         cout << answer << "\n";
     }
 }
