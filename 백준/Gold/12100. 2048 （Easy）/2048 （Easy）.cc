@@ -171,5 +171,5 @@ int main() {
     }
 
     dfs(board, 0, "");
-    cout << answer << endl;
+    cout << answer;
 }
