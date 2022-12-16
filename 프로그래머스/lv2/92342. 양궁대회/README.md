@@ -1,10 +1,10 @@
 # [level 2] 양궁대회 - 92342 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/92342?language=cpp) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/92342?language=kotlin) 
 
 ### 성능 요약
 
-메모리: 4.12 MB, 시간: 0.02 ms
+메모리: 63.7 MB, 시간: 29.48 ms
 
 ### 구분
 
