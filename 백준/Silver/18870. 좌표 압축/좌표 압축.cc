@@ -22,14 +22,6 @@ int main() {
     sort(temp.begin(), temp.begin() + N);
     temp.erase(unique(temp.begin(), temp.end()), temp.end());
     for (auto point: points) {
-        int left = 0, right = temp.size() - 1, mid;
-        while (left <= right) {
-            mid = (left + right) / 2;
-            if (temp[mid] == point) {
-                cout << mid << " ";
-                break;
-            } else if (temp[mid] > point) right = mid - 1;
-            else left = mid + 1;
-        }
+        cout << lower_bound(temp.begin(), temp.end(), point) - temp.begin() << " ";
     }
 }
