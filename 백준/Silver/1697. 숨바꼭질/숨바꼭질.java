@@ -22,21 +22,22 @@ public class Main {
         while (!queue.isEmpty()) {
             int[] info = queue.poll();
             int second = info[0];
-            int currentX = info[1];
-            if (currentX == K) {
+            int x = info[1];
+            if (x == K) {
                 result = Math.min(second, result);
             }
-            if (currentX * 2 <= 100000 && !visited[currentX * 2]) {
-                visited[currentX * 2] = true;
-                queue.add(new int[]{second + 1, currentX * 2});
+
+            if (x - 1 >= 0 && !visited[x - 1]) {
+                visited[x - 1] = true;
+                queue.add(new int[]{second + 1, x - 1});
             }
-            if (currentX - 1 >= 0 && !visited[currentX - 1]) {
-                visited[currentX - 1] = true;
-                queue.add(new int[]{second + 1, currentX - 1});
+            if (x + 1 <= 100000 && !visited[x + 1]) {
+                visited[x + 1] = true;
+                queue.add(new int[]{second + 1, x + 1});
             }
-            if (currentX + 1 <= 100000 && !visited[currentX + 1]) {
-                visited[currentX + 1] = true;
-                queue.add(new int[]{second + 1, currentX + 1});
+            if (x * 2 <= 100000 && !visited[x * 2]) {
+                visited[x * 2] = true;
+                queue.add(new int[]{second + 1, x * 2});
             }
         }
         bw.write(result + "");
