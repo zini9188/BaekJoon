@@ -9,7 +9,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
         StringTokenizer tokenizer;
         N = Integer.parseInt(br.readLine());
         board = new int[N + 1][N + 1];
@@ -48,6 +47,7 @@ public class Main {
 
     private static int check(int x, int y, int n) {
         int compare = board[x][y];
+        if (n == 1) return compare;
         for (int i = x; i < x + n; i++) {
             for (int j = y; j < y + n; j++) {
                 if (board[i][j] != compare) {
