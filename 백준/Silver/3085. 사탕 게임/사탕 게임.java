@@ -3,8 +3,8 @@ import java.io.*;
 public class Main {
     static int n;
     static char[][] board;
-    static int[] dx = {1, 0, -1, 0};
-    static int[] dy = {0, 1, 0, -1};
+    static int[] dx = {1, 0,};
+    static int[] dy = {0, 1,};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -26,7 +26,7 @@ public class Main {
         int result = 0;
         for (int x = 0; x < n; x++) {
             for (int y = 0; y < n; y++) {
-                for (int k = 0; k < 4; k++) {
+                for (int k = 0; k < 2; k++) {
                     int nx = x + dx[k];
                     int ny = y + dy[k];
                     if (!outOfRange(nx, ny) && !isSame(nx, ny, x, y)) {
