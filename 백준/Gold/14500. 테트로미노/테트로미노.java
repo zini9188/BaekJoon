@@ -2,12 +2,11 @@ import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N;
-    static int M;
+    static int N, M;
     static int[][] board;
-    static int[] dx = {0, 1, 0, -1};
-    static int[] dy = {1, 0, -1, 0};
     static boolean[][] visited;
+    static int[] dx = {1, 0, -1, 0};
+    static int[] dy = {0, 1, 0, -1};
     static int result = 0;
 
     public static void main(String[] args) throws IOException {
@@ -35,35 +34,33 @@ public class Main {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 visited[i][j] = true;
-                dfs(i, j, board[i][j], 1);
+                findPolyomino(i, j, 1, board[i][j]);
                 visited[i][j] = false;
             }
         }
     }
 
-    private static void dfs(int x, int y, int sum, int count) {
-        if (count == 4) {
-            result = Math.max(result, sum);
+    private static void findPolyomino(int x, int y, int cnt, int sum) {
+        if (cnt == 4) {
+            result = Math.max(sum, result);
             return;
         }
-
         for (int i = 0; i < 4; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
-            if (!outOfRange(nx, ny) && !visited[nx][ny]) {
-                if (count == 2) {
-                    visited[nx][ny] = true;
-                    dfs(x, y, sum + board[nx][ny], count + 1);
-                    visited[nx][ny] =false;
-                }
+            if (outOfRange(nx, ny) || visited[nx][ny]) continue;
+            if (cnt == 2) {
                 visited[nx][ny] = true;
-                dfs(nx, ny, sum + board[nx][ny], count + 1);
+                findPolyomino(x, y, cnt + 1, sum + board[nx][ny]);
                 visited[nx][ny] = false;
             }
+            visited[nx][ny] = true;
+            findPolyomino(nx, ny, cnt + 1, sum + board[nx][ny]);
+            visited[nx][ny] = false;
         }
     }
 
-    private static boolean outOfRange(int nx, int ny) {
-        return nx < 0 || ny < 0 || nx >= N || ny >= M;
+    private static boolean outOfRange(int x, int y) {
+        return x < 0 || y < 0 || x >= N || y >= M;
     }
 }
