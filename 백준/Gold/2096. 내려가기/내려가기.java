@@ -43,10 +43,8 @@ public class Main {
     }
 
     private static void findResult() {
-        for (int i = 0; i < 3; i++) {
-            max = Math.max(maxDp[N - 1][i], max);
-            min = Math.min(minDp[N - 1][i], min);
-        }
+        min = Math.min(Math.min(minDp[N - 1][0], minDp[N - 1][1]), minDp[N - 1][2]);
+        max = Math.max(Math.max(maxDp[N - 1][0], maxDp[N - 1][1]), maxDp[N - 1][2]);
     }
 
     private static void init() {
