@@ -51,8 +51,8 @@ public class Main {
     }
 
     private static void init() {
-        for (int i = 0; i < 3; i++) {
-            maxDp[0][i] = minDp[0][i] = board[0][i];
-        }
+        maxDp[0][0] = minDp[0][0] = board[0][0];
+        maxDp[0][1] = minDp[0][1] = board[0][1];
+        maxDp[0][2] = minDp[0][2] = board[0][2];
     }
 }
