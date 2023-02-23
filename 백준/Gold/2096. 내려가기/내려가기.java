@@ -6,11 +6,13 @@ public class Main {
     static int[][] board;
     static int[][] maxDp, minDp;
     static int max, min = Integer.MAX_VALUE;
+    static StringBuilder stringBuilder;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer tokenizer;
+        stringBuilder = new StringBuilder();
         N = Integer.parseInt(br.readLine());
         board = new int[N][3];
         maxDp = new int[N][3];
@@ -24,7 +26,7 @@ public class Main {
         init();
         solution();
         findResult();
-        bw.write(max + " " + min);
+        bw.write(stringBuilder.toString());
         bw.flush();
         bw.close();
         br.close();
@@ -45,6 +47,7 @@ public class Main {
     private static void findResult() {
         min = Math.min(Math.min(minDp[N - 1][0], minDp[N - 1][1]), minDp[N - 1][2]);
         max = Math.max(Math.max(maxDp[N - 1][0], maxDp[N - 1][1]), maxDp[N - 1][2]);
+        stringBuilder.append(max).append("\n").append(min);
     }
 
     private static void init() {
