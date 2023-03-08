@@ -1,48 +1,48 @@
 import java.io.*;
 
 public class Main {
+    static String S;
     static StringBuilder result = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        String S = br.readLine();
-        solution(S);
+        S = br.readLine();
+        solution();
         bw.write(result + "");
         bw.flush();
         bw.close();
         br.close();
     }
 
-    private static void solution(String S) {
+    private static void solution() {
         int index = 0;
         int len = S.length();
         StringBuilder temp = new StringBuilder();
         while (index < len) {
-            if (isMatch(S, index, ' ')) {
+            if (isMatch(S.charAt(index), ' ')) {
                 result.append(S.charAt(index++));
-            } else if (isMatch(S, index, '<')) {
-                while (isUnMatch(S, index, '>')) {
-                    result.append(S.charAt(index++));
-                }
-                result.append(S.charAt(index++));
+            } else if (isMatch(S.charAt(index), '<')) {
+                index = appendToRightAngle(index);
             } else {
-                while (index < len && isUnMatch(S, index, ' ') && isUnMatch(S, index, '<')) {
+                while (index < len && !isMatch(S.charAt(index), ' ') && !isMatch(S.charAt(index), '<')) {
                     temp.append(S.charAt(index++));
                 }
-                for (int i = temp.length() - 1; i >= 0; i--) {
-                    result.append(temp.charAt(i));
-                }
+                result.append(temp.reverse());
                 temp = new StringBuilder();
             }
         }
     }
 
-    private static boolean isUnMatch(String S, int index, char x) {
-        return S.charAt(index) != x;
+    private static int appendToRightAngle(int index) {
+        while (!isMatch(S.charAt(index), '>')) {
+            result.append(S.charAt(index++));
+        }
+        result.append(S.charAt(index++));
+        return index;
     }
 
-    private static boolean isMatch(String S, int index, char x) {
-        return S.charAt(index) == x;
+    private static boolean isMatch(char target, char symbol) {
+        return target == symbol;
     }
 }
