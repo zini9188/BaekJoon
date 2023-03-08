@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class Main {
-    static String result = "";
+    static StringBuilder result = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,23 +16,24 @@ public class Main {
 
     private static void solution(String S) {
         int index = 0;
-        String temp = "";
-        while (index < S.length()) {
+        int len = S.length();
+        StringBuilder temp = new StringBuilder();
+        while (index < len) {
             if (isMatch(S, index, ' ')) {
-                result += S.charAt(index++);
+                result.append(S.charAt(index++));
             } else if (isMatch(S, index, '<')) {
                 while (isUnMatch(S, index, '>')) {
-                    result += S.charAt(index++);
+                    result.append(S.charAt(index++));
                 }
-                result += S.charAt(index++);
+                result.append(S.charAt(index++));
             } else {
-                while (index < S.length() && isUnMatch(S, index, ' ') && isUnMatch(S, index, '<')) {
-                    temp += S.charAt(index++);
+                while (index < len && isUnMatch(S, index, ' ') && isUnMatch(S, index, '<')) {
+                    temp.append(S.charAt(index++));
                 }
                 for (int i = temp.length() - 1; i >= 0; i--) {
-                    result += temp.charAt(i);
+                    result.append(temp.charAt(i));
                 }
-                temp = "";
+                temp = new StringBuilder();
             }
         }
     }
