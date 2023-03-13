@@ -2,12 +2,13 @@ import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
-    static long w, h, f, c, x1, x2, y1, y2;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer tokenizer = new StringTokenizer(br.readLine());
+
+        long w, h, f, c, x1, x2, y1, y2;
         w = Long.parseLong(tokenizer.nextToken());
         h = Long.parseLong(tokenizer.nextToken());
         f = Long.parseLong(tokenizer.nextToken());
@@ -18,14 +19,6 @@ public class Main {
         y2 = Long.parseLong(tokenizer.nextToken());
 
         long area = w * h;
-        long painted = getPainted();
-        bw.write((area - painted) + "");
-        bw.flush();
-        bw.close();
-        br.close();
-    }
-
-    private static long getPainted() {
         long baseLine = Math.min(w - f, f);
         long rangeX;
         if (x1 >= baseLine) {
@@ -35,6 +28,9 @@ public class Main {
         } else {
             rangeX = (x2 - x1) * 2;
         }
-        return rangeX * (y2 - y1) * (c + 1);
+        bw.write((area - rangeX * (y2 - y1) * (c + 1)) + "");
+        bw.flush();
+        bw.close();
+        br.close();
     }
 }
