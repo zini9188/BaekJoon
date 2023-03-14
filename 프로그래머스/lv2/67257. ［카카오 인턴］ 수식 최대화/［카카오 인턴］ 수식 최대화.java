@@ -34,19 +34,17 @@ class Solution {
     }
 
     private static void split(String expression, ArrayList<Character> operators, ArrayList<Long> numbers) {
-        int len = expression.length();
         StringBuilder temp = new StringBuilder();
-        for (int i = 0; i < len; i++) {
-            char chatAt = expression.charAt(i);
-            if (chatAt == '*' || chatAt == '-' || chatAt == '+') {
-                operators.add(chatAt);
-                numbers.add(Long.parseLong(String.valueOf(temp)));
+        for (char charAt : expression.toCharArray()) {
+            if (charAt == '*' || charAt == '-' || charAt == '+') {
+                operators.add(charAt);
+                numbers.add(Long.parseLong(temp.toString()));
                 temp = new StringBuilder();
             } else {
-                temp.append(chatAt);
+                temp.append(charAt);
             }
         }
-        numbers.add(Long.parseLong(String.valueOf(temp)));
+        numbers.add(Long.parseLong(temp.toString()));
     }
 
     private static long calculate(char operator, long left, long right) {
