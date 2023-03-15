@@ -7,8 +7,7 @@ class Solution {
             }
             doSome(deliveries, n, cap);
             doSome(pickups, n, cap);
-            second += (n * 2L);
-            
+            second += (n * 2L);            
         }
         return second;
     }
