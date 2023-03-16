@@ -22,8 +22,6 @@ class Solution {
                 int canCarry = cap - truck;
                 truck += canCarry;
                 boxes[i] -= canCarry;
-            }
-            if (truck == cap) {
                 break;
             }
         }
