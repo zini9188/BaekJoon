@@ -21,16 +21,16 @@ class Solution {
         return answer;
     }
 
-    private void shareProfit(double profit, String seller) {
+    private void shareProfit(int profit, String seller) {
         if (seller.equals("-")) {
             return;
         }
-        int nextProfit = (int) (profit / 10);
+        int nextProfit = profit / 10;
         if(nextProfit == 0){
-            profits.put(seller, profits.get(seller) + (int) profit);
+            profits.put(seller, profits.get(seller) + profit);
             return;
         }
-        profits.put(seller, profits.get(seller) + (int) (profit - nextProfit));
+        profits.put(seller, profits.get(seller) + (profit - nextProfit));
         shareProfit(nextProfit, referralMap.get(seller));
     }
 }
