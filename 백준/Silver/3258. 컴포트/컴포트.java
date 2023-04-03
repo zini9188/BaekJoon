@@ -2,8 +2,9 @@ import java.io.*;
 import java.util.StringTokenizer;
 
 class GameBoard {
-    int field, target, current;
-    boolean[] trap;
+    private final int field, target;
+    private int current;
+    private final boolean[] trap;
 
     public GameBoard(int field, int target) {
         this.field = field;
@@ -19,17 +20,20 @@ class GameBoard {
         current = 1;
         boolean[] visited = trap.clone();
         while (current != target) {
-            current += n;
-            if (current > field) {
-                current -= field;
-            }
+            move(n);
             if (visited[current]) {
                 return false;
-            }else{
-                visited[current] = true;
             }
+            visited[current] = true;
         }
         return true;
+    }
+
+    private void move(int n) {
+        current += n;
+        if (current > field) {
+            current -= field;
+        }
     }
 }
 
@@ -46,7 +50,7 @@ public class Main {
         for (int i = 0; i < M; i++) {
             gameBoard.addTrap(Integer.parseInt(tokenizer.nextToken()));
         }
-        for (int i = 1; i < gameBoard.field; i++) {
+        for (int i = 1; i < N; i++) {
             if (gameBoard.moveField(i)) {
                 bw.write(i + "");
                 break;
