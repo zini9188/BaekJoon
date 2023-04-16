@@ -1,8 +1,9 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-class Exam implements Comparable {
+class Exam implements Comparable<Exam> {
     String name;
     int kor, eng, math;
 
@@ -14,8 +15,7 @@ class Exam implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        Exam other = (Exam) o;
+    public int compareTo(Exam other) {
         if (this.kor == other.kor) {
             if (this.eng == other.eng) {
                 if (this.math == other.math) {
@@ -34,13 +34,16 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         int N = Integer.parseInt(br.readLine());
-        ArrayList<Exam> exams = new ArrayList<>();
+        PriorityQueue<Exam> exams = new PriorityQueue<>(Exam::compareTo);
         for (int i = 0; i < N; i++) {
             StringTokenizer tokenizer = new StringTokenizer(br.readLine());
             exams.add(new Exam(tokenizer.nextToken(), Integer.parseInt(tokenizer.nextToken()), Integer.parseInt(tokenizer.nextToken()), Integer.parseInt(tokenizer.nextToken())));
         }
-        exams.sort(Exam::compareTo);
-        exams.forEach(exam -> System.out.println(exam.name));
+        StringBuilder builder = new StringBuilder();
+        while (!exams.isEmpty()){
+            builder.append(exams.poll().name).append("\n");
+        }
+        bw.write(builder.toString());
         bw.flush();
         bw.close();
         br.close();
