@@ -4,11 +4,11 @@
 
 ### 성능 요약
 
-메모리: 2024 KB, 시간: 0 ms
+메모리: 14716 KB, 시간: 148 ms
 
 ### 분류
 
-구현(implementation), 시뮬레이션(simulation)
+구현, 시뮬레이션
 
 ### 문제 설명
 
@@ -29,7 +29,7 @@
 
 <p>체스판에는 돌이 하나 있는데, 돌과 같은 곳으로 이동할 때는, 돌을 킹이 움직인 방향과 같은 방향으로 한 칸 이동시킨다. 아래 그림을 참고하자.</p>
 
-<p style="text-align:center"><img alt="" src=""></p>
+<p style="text-align:center"><img alt="" src="https://upload.acmicpc.net/259549ad-b275-48a1-91f7-197a7ce72a23/-/preview/"></p>
 
 <p>입력으로 킹이 어떻게 움직여야 하는지 주어진다. 입력으로 주어진 대로 움직여서 킹이나 돌이 체스판 밖으로 나갈 경우에는 그 이동은 건너 뛰고 다음 이동을 한다.</p>
 
