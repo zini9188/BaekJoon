@@ -1,9 +1,7 @@
 import java.util.*;
 
 class Solution {
-    static int[] dx = {-1, 1, 0, 0};
-    static int[] dy = {0, 0, -1, 1};
-    static Map<Character, Integer> map;
+    static Map<Character, int[]> map;
     public int[] solution(String[] park, String[] routes) {
         int[] pos = new int[2];
         for(int i = 0; i < park.length; i++){
@@ -17,10 +15,10 @@ class Solution {
         }
         
         map = new HashMap<>();
-        map.put('N', 0);
-        map.put('S', 1);
-        map.put('W', 2);
-        map.put('E', 3);        
+        map.put('N', new int[]{-1, 0});
+        map.put('S', new int[]{1, 0});
+        map.put('W', new int[]{0, -1});
+        map.put('E', new int[]{0, 1});        
         
         for(String route : routes){
             char direction = route.charAt(0);
@@ -35,8 +33,9 @@ class Solution {
         int x = pos[0];
         int y = pos[1];
         for(int i = 0; i < dist - '0'; i++){
-            int nx = x + dx[map.get(dir)];
-            int ny = y + dy[map.get(dir)];
+            int[] np = map.get(dir);
+            int nx = x + np[0];
+            int ny = y + np[1];
             if(!isInRange(nx, ny, park.length, park[0].length()) || park[nx].charAt(ny) == 'X'){            
                 return pos;
             }
