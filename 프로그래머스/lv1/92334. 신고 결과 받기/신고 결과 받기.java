@@ -1,44 +1,38 @@
 import java.util.*;
 
-class Solution {
-    Map<String, HashSet<String>> reportMap = new HashMap<>();
-    Map<String, Integer> result = new HashMap<>();
-    
+class Solution {    
     public int[] solution(String[] id_list, String[] report, int k) {        
         // id_list : 유저 리스트
-        // report : 신고 리스트      
-        
+        // report : 신고 리스트              
         int[] answer = new int[id_list.length];
         
-        for(String id : id_list){
-            reportMap.put(id, new HashSet<>());        
-            result.put(id, 0);
+        Map<String, HashSet<String>> reports = new HashMap<>();
+        Map<String, Integer> userId = new HashMap<>();
+        
+        for(int i = 0; i < id_list.length; i++){
+            reports.put(id_list[i], new HashSet<>());        
+            userId.put(id_list[i], i);
         }
         
-        for(String reportLine : report){
-            StringTokenizer tokenizer = new StringTokenizer(reportLine);
+        for(String content : report){
+            StringTokenizer tokenizer = new StringTokenizer(content);
             String reporter = tokenizer.nextToken();
             String reported = tokenizer.nextToken();
-            HashSet<String> get = reportMap.get(reported);
+            HashSet<String> get = reports.get(reported);
             get.add(reporter);
-            reportMap.put(reported, get);            
+            reports.put(reported, get);            
         }
         
         for(String id : id_list){
-            HashSet<String> set = reportMap.get(id);
+            HashSet<String> set = reports.get(id);
             if(set.size() >= k){
                 Iterator<String> iter = set.iterator();
                 while(iter.hasNext()){
                     String user = iter.next();
-                    result.put(user, result.getOrDefault(user, 0) + 1);
+                    answer[userId.get(user)]++;
                 }
             }
         }
-        
-        int index = 0;
-        for(String id : id_list){
-            answer[index++] = result.get(id);            
-        }        
         
         return answer;
     }
