@@ -2,9 +2,11 @@ import java.util.*;
 
 class Solution {
     static class Process{
+        
         String name;
         int start;
         int playtime;
+        
         public Process(String name, int start, int playtime){
             this.name = name;
             this.start = start;
@@ -12,9 +14,8 @@ class Solution {
         }
     }
     
-    public String[] solution(String[][] plans) {
+    public String[] solution(String[][] plans) {        
         String[] answer = new String[plans.length];
-        
         Stack<Process> stack = new Stack<>();
         PriorityQueue<Process> queue = new PriorityQueue<>((o1, o2) -> {
             return o1.start - o2.start;
@@ -41,11 +42,11 @@ class Solution {
                     int update = stack.peek().start + stack.peek().playtime;
                     answer[index++] = stack.peek().name;
                     stack.pop();
+                    // 마지막 멈춘 과제의 시작 시간을 끝난 과제의 시간으로 갱신
                     if(!stack.isEmpty()){
                         stack.peek().start = update;
                     }
-                }
-                
+                }                
                 // 끝내지 못하는 경우
                 if(!stack.isEmpty() && !canFinish(stack.peek(), process)){
                     stack.peek().playtime -= process.start - stack.peek().start;        
@@ -54,6 +55,7 @@ class Solution {
             stack.push(process);            
         }
         
+        // 남아 있는 과제들은 차례대로 진행할 수 있으므로 진행
         while(!stack.isEmpty()){
             answer[index++] = stack.pop().name;
         }   
@@ -65,10 +67,7 @@ class Solution {
         return Integer.parseInt(time[0]) * 60 + Integer.parseInt(time[1]);
     }
     
-    private boolean canFinish(Process before, Process current){
-        if(before.playtime <= 0){
-            return true;
-        }
+    private boolean canFinish(Process before, Process current){        
         // 이전 과제가 현재 과제의 시작 시간까지 마칠 수 있는지
         return current.start - before.start >= before.playtime;
     }
