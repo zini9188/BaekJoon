@@ -8,7 +8,7 @@ public class Main {
 
     static int N, totalPopulation;
     static City[] cities;
-    static boolean[] visited;
+    static boolean[] select;
     static int answer = Integer.MAX_VALUE;
 
     public static void main(String[] args) throws IOException {
@@ -16,7 +16,7 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         N = Integer.parseInt(br.readLine());
         cities = new City[N + 1];
-        visited = new boolean[N + 1];
+        select = new boolean[N + 1];
 
         StringTokenizer tokenizer = new StringTokenizer(br.readLine());
         for (int i = 1; i <= N; i++) {
@@ -26,14 +26,14 @@ public class Main {
 
         for (int i = 1; i <= N; i++) {
             tokenizer = new StringTokenizer(br.readLine());
-            int nearAreaCount = Integer.parseInt(tokenizer.nextToken());
-            for (int j = 0; j < nearAreaCount; j++) {
+            int adjoinArea = Integer.parseInt(tokenizer.nextToken());
+            for (int j = 0; j < adjoinArea; j++) {
                 cities[i].connected.add(Integer.parseInt(tokenizer.nextToken()));
             }
         }
 
-        for (int i = 1; i < N; i++) {
-            combine(i, 0, 1);
+        for (int i = 1; i <= N / 2; i++) {
+            combination(i, 0, 1);
         }
 
         bw.write((answer == Integer.MAX_VALUE ? -1 : answer) + "");
@@ -42,69 +42,69 @@ public class Main {
         br.close();
     }
 
-    private static void combine(int limit, int count, int index) {
-        if (count == limit && isConnection()) {
-            findPeople();
+    private static void combination(int limit, int count, int index) {
+        if (count == limit && isConnect()) {
+            answer = Math.min(answer, getPopulationDiff());
             return;
         }
 
         for (int i = index; i <= N; i++) {
-            if (!visited[i]) {
-                visited[i] = true;
-                combine(limit, count + 1, i);
-                visited[i] = false;
+            if (!select[i]) {
+                select[i] = true;
+                combination(limit, count + 1, i);
+                select[i] = false;
             }
         }
     }
 
-    private static boolean isConnection() {
-        ArrayList<Integer> group1 = new ArrayList<>();
-        ArrayList<Integer> group2 = new ArrayList<>();
+    private static boolean isConnect() {
+        ArrayList<Integer> groupA = new ArrayList<>();
+        ArrayList<Integer> groupB = new ArrayList<>();
 
         for (int i = 1; i <= N; i++) {
-            if (visited[i]) {
-                group1.add(i);
+            if (select[i]) {
+                groupA.add(i);
             } else {
-                group2.add(i);
+                groupB.add(i);
             }
         }
 
-        return checkConnectionArea(group1) && checkConnectionArea(group2);
+        return checkConnection(groupA) && checkConnection(groupB);
     }
 
-    private static boolean checkConnectionArea(ArrayList<Integer> area) {
-        if (area.size() == 1) {
+    private static boolean checkConnection(ArrayList<Integer> group) {
+        if (group.size() == 1) {
             return true;
         }
 
-        boolean[] v = new boolean[N + 1];
-        Queue<Integer> node = new LinkedList<>();
-        node.add(area.get(0));
-        v[area.get(0)] = true;
-        int size = 0;
-        while (!node.isEmpty()) {
-            int n = node.poll();
+        boolean[] visited = new boolean[N + 1];
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(group.get(0));
+        visited[group.get(0)] = true;
+        int count = 0;
+        while (!queue.isEmpty()) {
+            int n = queue.poll();
             for (Integer integer : cities[n].connected) {
-                if (!v[integer] && visited[n] == visited[integer]) {
-                    v[integer] = true;
-                    node.add(integer);
-                    size++;
+                if (!visited[integer] && select[n] == select[integer]) {
+                    visited[integer] = true;
+                    queue.add(integer);
+                    count++;
                 }
             }
         }
 
-        return size == area.size() - 1;
+        return count == group.size() - 1;
     }
 
-    private static void findPeople() {
-        int population = 0;
+    private static int getPopulationDiff() {
+        int groupA = 0;
         for (int i = 1; i <= N; i++) {
-            if (visited[i]) {
-                population += cities[i].population;
+            if (select[i]) {
+                groupA += cities[i].population;
             }
         }
-        int diff = totalPopulation - population;
-        answer = Math.min(Math.abs(population - diff), answer);
+        int groupB = totalPopulation - groupA;
+        return Math.abs(groupA - groupB);
     }
 
     private static class City {
