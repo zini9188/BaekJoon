@@ -1,17 +1,12 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
-    static class Pair {
-        String cmd;
-        int changed;
-
-        public Pair(String cmd, int changed) {
-            this.cmd = cmd;
-            this.changed = changed;
-        }
-    }
-
     static int T;
     static int A, B;
     static Queue<Pair> queue;
@@ -38,7 +33,7 @@ public class Main {
     }
 
     private static void solution() {
-        queue = new PriorityQueue<>((Comparator.comparingInt(o -> o.cmd.length())));
+        queue = new LinkedList<>();
         queue.add(new Pair("", A));
         builder.append(bfs()).append("\n");
     }
@@ -56,19 +51,19 @@ public class Main {
             int L = operateL(target);
             int R = operateR(target);
 
-            if(!visited[D]){
+            if (!visited[D]) {
                 visited[D] = true;
                 queue.add(new Pair(command + "D", D));
             }
-            if(!visited[S]){
+            if (!visited[S]) {
                 visited[S] = true;
                 queue.add(new Pair(command + "S", S));
             }
-            if(!visited[L]){
+            if (!visited[L]) {
                 visited[L] = true;
                 queue.add(new Pair(command + "L", L));
             }
-            if(!visited[R]){
+            if (!visited[R]) {
                 visited[R] = true;
                 queue.add(new Pair(command + "R", R));
             }
@@ -90,5 +85,15 @@ public class Main {
 
     private static int operateR(int a) {
         return (a % 10 * 1000) + a / 10;
+    }
+
+    static class Pair {
+        String cmd;
+        int changed;
+
+        public Pair(String cmd, int changed) {
+            this.cmd = cmd;
+            this.changed = changed;
+        }
     }
 }
