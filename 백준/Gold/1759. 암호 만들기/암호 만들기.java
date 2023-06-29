@@ -9,7 +9,6 @@ public class Main {
     static ArrayList<String> answer = new ArrayList<>();
     static int L, C;
     static String[] guess;
-    static boolean[] visited;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -20,7 +19,6 @@ public class Main {
         C = Integer.parseInt(tokenizer.nextToken());
 
         guess = new String[C];
-        visited = new boolean[C];
         tokenizer = new StringTokenizer(br.readLine());
         for (int i = 0; i < C; i++) {
             guess[i] = tokenizer.nextToken();
@@ -43,18 +41,14 @@ public class Main {
         if (isPossiblePassword(consonant, vowel)) {
             answer.add(password);
             return;
-        }
+        }     
 
         for (int i = index; i < C; i++) {
-            if (!visited[i]) {
-                visited[i] = true;
-                String nextPassword = password + guess[i];
-                if (AEIOU.contains(guess[i])) {
-                    dfs(i + 1, consonant, vowel + 1, nextPassword);
-                } else {
-                    dfs(i + 1, consonant + 1, vowel, nextPassword);
-                }
-                visited[i] = false;
+            String nextPassword = password + guess[i];
+            if (AEIOU.contains(guess[i])) {
+                dfs(i + 1, consonant, vowel + 1, nextPassword);
+            } else {
+                dfs(i + 1, consonant + 1, vowel, nextPassword);
             }
         }
     }
