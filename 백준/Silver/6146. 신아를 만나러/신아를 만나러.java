@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
@@ -18,7 +17,6 @@ public class Main {
         int N = Integer.parseInt(tokenizer.nextToken());
 
         int[][] map = new int[1001][1001];
-
         for (int i = 0; i < N; i++) {
             tokenizer = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(tokenizer.nextToken());
@@ -26,30 +24,27 @@ public class Main {
             map[a + 500][b + 500] = 1;
         }
 
-        Queue<Point> queue = new LinkedList<>();
-        queue.add(new Point(500, 500));
-        int[][] dist = new int[1001][1001];
-        for (int i = 0; i < 1001; i++) {
-            Arrays.fill(dist[i], Integer.MAX_VALUE);
-        }
-        dist[500][500] = 0;
-
         int answer = Integer.MAX_VALUE;
+        Queue<Point> queue = new LinkedList<>();
+        queue.add(new Point(500, 500, 0));
+        boolean[][] visited = new boolean[1001][1001];
         while (!queue.isEmpty()) {
             Point current = queue.poll();
             int cx = current.x;
             int cy = current.y;
+            int cd = current.dist;
 
             if (cx == X && cy == Y) {
-                answer = Math.min(answer, dist[cx][cy]);
+                answer = cd;
+                break;
             }
 
             for (int dir = 0; dir < 4; dir++) {
                 int nx = cx + dx[dir];
                 int ny = cy + dy[dir];
-                if (isInRange(nx, ny) && map[nx][ny] == 0 && dist[nx][ny] > dist[cx][cy] + 1) {
-                    dist[nx][ny] = dist[cx][cy] + 1;
-                    queue.add(new Point(nx, ny));
+                if (isInRange(nx, ny) && map[nx][ny] == 0 && !visited[nx][ny]) {
+                    visited[nx][ny] = true;
+                    queue.add(new Point(nx, ny, cd + 1));
                 }
             }
         }
@@ -65,11 +60,12 @@ public class Main {
     }
 
     static class Point {
-        int x, y;
+        int x, y, dist;
 
-        public Point(int x, int y) {
+        public Point(int x, int y, int dist) {
             this.x = x;
             this.y = y;
+            this.dist = dist;
         }
     }
 }
