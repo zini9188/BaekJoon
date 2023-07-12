@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
@@ -18,16 +17,16 @@ public class Main {
         m = Integer.parseInt(tokenizer.nextToken());
 
         int[][] map = new int[n][m];
-        int[][] distance = new int[n][m];
+        boolean[][] visited = new boolean[n][m];
         Queue<Point> points = new LinkedList<>();
         for (int i = 0; i < n; i++) {
             tokenizer = new StringTokenizer(br.readLine());
-            Arrays.fill(distance[i], 1000 * 1000 + 1);
             for (int j = 0; j < m; j++) {
                 map[i][j] = Integer.parseInt(tokenizer.nextToken());
                 if (map[i][j] == 2) {
                     points.add(new Point(i, j, 0));
-                    distance[i][j] = 0;
+                    visited[i][j] = true;
+                    map[i][j] = 0;
                 }
             }
         }
@@ -40,8 +39,9 @@ public class Main {
             for (int dir = 0; dir < 4; dir++) {
                 int nx = x + dx[dir];
                 int ny = y + dy[dir];
-                if (isInRange(nx, ny) && map[nx][ny] == 1 && dist + 1 < distance[nx][ny]) {
-                    distance[nx][ny] = dist + 1;
+                if (isInRange(nx, ny) && map[nx][ny] == 1 && !visited[nx][ny]) {
+                    visited[nx][ny] = true;
+                    map[nx][ny] = dist + 1;
                     points.add(new Point(nx, ny, dist + 1));
                 }
             }
@@ -50,14 +50,10 @@ public class Main {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (map[i][j] == 1) {
-                    if (distance[i][j] == 1000 * 1000 + 1) {
-                        builder.append(-1).append(" ");
-                    } else {
-                        builder.append(distance[i][j]).append(" ");
-                    }
+                if (!visited[i][j] && map[i][j] != 0) {
+                    builder.append("-1 ");
                 } else {
-                    builder.append(0).append(" ");
+                    builder.append(map[i][j]).append(" ");
                 }
             }
             builder.append("\n");
