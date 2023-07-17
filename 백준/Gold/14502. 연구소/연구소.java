@@ -31,7 +31,7 @@ public class Main {
             }
         }
 
-        buildWall(0, 0, 0);
+        buildWall(0, 0);
 
         bw.write(answer + "");
         bw.flush();
@@ -39,17 +39,17 @@ public class Main {
         br.close();
     }
 
-    private static void buildWall(int nx, int ny, int count) {
+    private static void buildWall(int nx, int count) {
         if (count == 3) {
             answer = Math.max(answer, spread());
             return;
         }
 
         for (int i = nx; i < N; i++) {
-            for (int j = ny; j < M; j++) {
+            for (int j = 0; j < M; j++) {
                 if (lab[i][j] == 0) {
                     lab[i][j] = 1;
-                    buildWall(nx, ny, count + 1);
+                    buildWall(nx, count + 1);
                     lab[i][j] = 0;
                 }
             }
