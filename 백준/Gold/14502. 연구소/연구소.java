@@ -59,7 +59,7 @@ public class Main {
     private static int spread() {
         int[][] copy = new int[N][M];
         for (int i = 0; i < N; i++) {
-            copy[i] = lab[i].clone();
+            if (M >= 0) System.arraycopy(lab[i], 0, copy[i], 0, M);
         }
 
         for (Point point : virus) {
