@@ -15,19 +15,19 @@ public class Main {
         M = Integer.parseInt(tokenizer.nextToken());
         K = Integer.parseInt(tokenizer.nextToken());
 
-        ArrayList<Beer> beers = new ArrayList<>();
+        PriorityQueue<Beer> beers = new PriorityQueue<>((o1, o2) -> o1.level == o2.level ? o2.favor - o1.favor : o1.level - o2.level);
         for (int i = 0; i < K; i++) {
             tokenizer = new StringTokenizer(br.readLine());
             int v = Integer.parseInt(tokenizer.nextToken());
             int c = Integer.parseInt(tokenizer.nextToken());
             beers.add(new Beer(v, c));
         }
-        beers.sort((o1, o2) -> o1.level == o2.level ? o2.favor - o1.favor : o1.level - o2.level);
 
         int favor = 0;
         int minLevel = -1;
         PriorityQueue<Integer> pq = new PriorityQueue<>();
-        for (Beer beer : beers) {
+        while (!beers.isEmpty()){
+            Beer beer = beers.poll();
             favor += beer.favor;
             pq.add(beer.favor);
 
