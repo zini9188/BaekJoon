@@ -26,13 +26,13 @@ public class Main {
                 int curY = points[i].y;
                 int befX = points[i - 1].x;
                 int befY = points[i - 1].y;
-
                 if (Math.abs(curX - befX) == 2 && Math.abs(curY - befY) == 1 || Math.abs(curX - befX) == 1 && Math.abs(curY - befY) == 2) {
                 } else {
                     flag = true;
                     break;
                 }
             }
+            
             int lastX = points[35].x;
             int lastY = points[35].y;
             int startX = points[0].x;
@@ -42,7 +42,11 @@ public class Main {
                 flag = true;
             }
         }
-        System.out.println(flag ? "Invalid" : "Valid");
+        
+        bw.write(flag ? "Invalid" : "Valid");
+        bw.flush();
+        bw.close();
+        br.close();
     }
 
     static class Point {
