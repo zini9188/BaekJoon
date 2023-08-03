@@ -32,19 +32,17 @@ public class Main {
     }
 
     private static void makeFood(int depth, int sour, int salty) {
-        if (depth >= 1) {
+        if (salty != 0) {
             answer = Math.min(Math.abs(sour - salty), answer);
         }
+        
         if (depth == N) {
             return;
         }
 
-        for (int i = 0; i < N; i++) {
-            if (!visited[i]) {
-                visited[i] = true;
-                makeFood(depth + 1, sour * ingredients[i][0], salty + ingredients[i][1]);
-                visited[i] = false;
-            }
-        }
+        visited[depth] = true;
+        makeFood(depth + 1, sour * ingredients[depth][0], salty + ingredients[depth][1]);
+        visited[depth] = false;
+        makeFood(depth + 1, sour, salty);
     }
 }
