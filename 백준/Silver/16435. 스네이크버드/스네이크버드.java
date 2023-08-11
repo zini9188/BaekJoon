@@ -22,6 +22,8 @@ public class Main {
         for (int fruit : fruits) {
             if (fruit <= L) {
                 L++;
+            } else {
+                break;
             }
         }
 
