@@ -1,24 +1,13 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static class Point {
-        int x, y;
-
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-
     static int N, M;
     static int[][] city;
     static ArrayList<Point> chickens;
     static ArrayList<Point> houses;
-    static ArrayList<Point> selectedChickens;
+    static Point[] selectedChickens;
     static boolean[][] visited;
     static int answer = Integer.MAX_VALUE;
 
@@ -32,28 +21,28 @@ public class Main {
         visited = new boolean[N][N];
         chickens = new ArrayList<>();
         houses = new ArrayList<>();
-        selectedChickens = new ArrayList<>();
+        selectedChickens = new Point[M];
         for (int i = 0; i < N; i++) {
             tokenizer = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
                 city[i][j] = Integer.parseInt(tokenizer.nextToken());
-                if (city[i][j] == 1) houses.add(new Point(i, j));
-                if (city[i][j] == 2) chickens.add(new Point(i, j));
+                if (city[i][j] == 1) {
+                    houses.add(new Point(i, j));
+                } else if (city[i][j] == 2) {
+                    chickens.add(new Point(i, j));
+                }
             }
         }
-        solution();
+
+        findChickenStore(0, 0);
         bw.write(answer + "");
         bw.flush();
         bw.close();
         br.close();
     }
 
-    private static void solution() {
-        findChickenStore(0, 0);
-    }
-
-    private static void findChickenStore(int index, int count) {
-        if (count == M) {
+    private static void findChickenStore(int index, int depth) {
+        if (depth == M) {
             answer = Math.min(getChickenDistance(), answer);
             return;
         }
@@ -63,9 +52,9 @@ public class Main {
             int y = chickens.get(i).y;
             if (!visited[x][y]) {
                 visited[x][y] = true;
-                selectedChickens.add(new Point(x, y));
-                findChickenStore(i + 1, count + 1);
-                selectedChickens.remove(selectedChickens.size() - 1);
+                selectedChickens[depth] = new Point(x, y);
+                findChickenStore(i + 1, depth + 1);
+                selectedChickens[depth] = null;
                 visited[x][y] = false;
             }
         }
@@ -82,5 +71,14 @@ public class Main {
             result += sum;
         }
         return result;
+    }
+
+    static class Point {
+        int x, y;
+
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 }
