@@ -17,7 +17,7 @@ public class Main {
             tokenizer = new StringTokenizer(br.readLine());
             int p = Integer.parseInt(tokenizer.nextToken());
             int t = Integer.parseInt(tokenizer.nextToken());
-            waitingLine.add(new Customer(p, t));
+            waitingLine.offer(new Customer(p, t));
         }
 
         int M = Integer.parseInt(br.readLine());
@@ -27,43 +27,33 @@ public class Main {
             int p = Integer.parseInt(tokenizer.nextToken());
             int t = Integer.parseInt(tokenizer.nextToken());
             int c = Integer.parseInt(tokenizer.nextToken());
-            admissionCustomer.add(new Customer(p, t, c));
+            admissionCustomer.offer(new Customer(p, t, c));
         }
 
-        int time = 0;
+        StringBuilder sb = new StringBuilder();
         Customer currentCustomer = null;
-        StringBuilder builder = new StringBuilder();
-        while (time < W) {
+        for (int time = 0; time < W; ) {
             if (!waitingLine.isEmpty()) {
                 currentCustomer = waitingLine.poll();
-                if (currentCustomer.taskTime > T) {
-                    for (int i = 0; i < T && time < W; i++) {
-                        builder.append(currentCustomer.id).append("\n");
-                        time++;
-                        currentCustomer.taskTime--;
-                    }
-                } else {
-                    for (int i = 0; i < currentCustomer.taskTime && time < W; i++) {
-                        builder.append(currentCustomer.id).append("\n");
-                        time++;
-                    }
-                    currentCustomer.taskTime = 0;
+
+                int minTime = Math.min(currentCustomer.taskTime, T);
+                for (int i = 0; i < minTime && time < W; i++) {
+                    sb.append(currentCustomer.id).append("\n");
+                    time++;
                 }
+                currentCustomer.taskTime -= minTime;
             }
 
             while (!admissionCustomer.isEmpty() && admissionCustomer.peek().admissionTime <= time) {
-                waitingLine.add(admissionCustomer.poll());
+                waitingLine.offer(admissionCustomer.poll());
             }
 
-            if (currentCustomer != null) {
-                if (currentCustomer.taskTime > 0) {
-                    waitingLine.add(new Customer(currentCustomer.id, currentCustomer.taskTime));
-                }
-                currentCustomer = null;
+            if (currentCustomer != null && currentCustomer.taskTime > 0) {
+                waitingLine.offer(new Customer(currentCustomer.id, currentCustomer.taskTime));
             }
         }
 
-        bw.write(builder.toString());
+        bw.write(sb.toString());
         bw.flush();
         bw.close();
         br.close();
