@@ -12,60 +12,55 @@ public class Main {
         int T = Integer.parseInt(tokenizer.nextToken());
         int W = Integer.parseInt(tokenizer.nextToken());
 
-        Queue<Customer> waiting = new ArrayDeque<>();
+        Queue<Customer> waitingLine = new ArrayDeque<>();
         for (int i = 0; i < N; i++) {
             tokenizer = new StringTokenizer(br.readLine());
-            int P = Integer.parseInt(tokenizer.nextToken());
+            int p = Integer.parseInt(tokenizer.nextToken());
             int t = Integer.parseInt(tokenizer.nextToken());
-            waiting.add(new Customer(P, t));
+            waitingLine.add(new Customer(p, t));
         }
 
         int M = Integer.parseInt(br.readLine());
-        PriorityQueue<Customer> entranceCustomer = new PriorityQueue<>(Comparator.comparingInt(o -> o.entranceTime));
+        PriorityQueue<Customer> admissionCustomer = new PriorityQueue<>(Comparator.comparingInt(o -> o.admissionTime));
         for (int i = 0; i < M; i++) {
             tokenizer = new StringTokenizer(br.readLine());
-            int P = Integer.parseInt(tokenizer.nextToken());
+            int p = Integer.parseInt(tokenizer.nextToken());
             int t = Integer.parseInt(tokenizer.nextToken());
             int c = Integer.parseInt(tokenizer.nextToken());
-            entranceCustomer.add(new Customer(P, t, c));
+            admissionCustomer.add(new Customer(p, t, c));
         }
 
         int time = 0;
         Customer currentCustomer = null;
-        List<Integer> answers = new ArrayList<>();
+        StringBuilder builder = new StringBuilder();
         while (time < W) {
-            if (!waiting.isEmpty()) {
-                currentCustomer = waiting.poll();
+            if (!waitingLine.isEmpty()) {
+                currentCustomer = waitingLine.poll();
                 if (currentCustomer.taskTime > T) {
-                    for (int i = 0; i < T; i++) {
-                        answers.add(currentCustomer.customerId);
+                    for (int i = 0; i < T && time < W; i++) {
+                        builder.append(currentCustomer.id).append("\n");
+                        time++;
+                        currentCustomer.taskTime--;
                     }
-                    currentCustomer.taskTime -= T;
-                    time += T;
                 } else {
-                    for (int i = 0; i < currentCustomer.taskTime; i++) {
-                        answers.add(currentCustomer.customerId);
+                    for (int i = 0; i < currentCustomer.taskTime && time < W; i++) {
+                        builder.append(currentCustomer.id).append("\n");
+                        time++;
                     }
-                    time += currentCustomer.taskTime;
                     currentCustomer.taskTime = 0;
                 }
             }
 
-            while (!entranceCustomer.isEmpty() && entranceCustomer.peek().entranceTime <= time) {
-                waiting.add(entranceCustomer.poll());
+            while (!admissionCustomer.isEmpty() && admissionCustomer.peek().admissionTime <= time) {
+                waitingLine.add(admissionCustomer.poll());
             }
 
             if (currentCustomer != null) {
                 if (currentCustomer.taskTime > 0) {
-                    waiting.add(new Customer(currentCustomer.customerId, currentCustomer.taskTime));
+                    waitingLine.add(new Customer(currentCustomer.id, currentCustomer.taskTime));
                 }
                 currentCustomer = null;
             }
-        }
-
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < W && i < answers.size(); i++) {
-            builder.append(answers.get(i)).append("\n");
         }
 
         bw.write(builder.toString());
@@ -75,19 +70,19 @@ public class Main {
     }
 
     static class Customer {
-        int customerId;
+        int id;
         int taskTime;
-        int entranceTime;
+        int admissionTime;
 
-        public Customer(int customerId, int taskTime) {
-            this.customerId = customerId;
+        public Customer(int id, int taskTime) {
+            this.id = id;
             this.taskTime = taskTime;
         }
 
-        public Customer(int customerId, int taskTime, int entranceTime) {
-            this.customerId = customerId;
+        public Customer(int id, int taskTime, int admissionTime) {
+            this.id = id;
             this.taskTime = taskTime;
-            this.entranceTime = entranceTime;
+            this.admissionTime = admissionTime;
         }
     }
 }
