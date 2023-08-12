@@ -22,11 +22,10 @@ public class Main {
             tokenizer = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(tokenizer.nextToken());
             int b = Integer.parseInt(tokenizer.nextToken());
-            if (find(a) == find(b)) {
+            if (union(a, b)) {
                 answer = i;
                 break;
             }
-            union(a, b);
         }
 
         bw.write(answer + "");
@@ -35,12 +34,14 @@ public class Main {
         br.close();
     }
 
-    static void union(int a, int b) {
+    static boolean union(int a, int b) {
         int x1 = find(a);
         int x2 = find(b);
-        if (x1 != x2) {
-            parents[x2] = x1;
+        if (x1 == x2) {
+            return true;
         }
+        parents[x2] = x1;
+        return false;
     }
 
     static int find(int x) {
