@@ -37,21 +37,15 @@ public class Main {
             }
         }
 
-        ArrayList<Integer> answer = new ArrayList<>();
-        answer.add(0);
         while (!pq.isEmpty()) {
             int current = pq.poll();
 
-            answer.add(current);
+            sb.append(current).append(" ");
             for (Integer next : graph.get(current)) {
                 if (--possible[next] == 0) {
                     pq.add(next);
                 }
             }
-        }
-
-        for (int i = 1; i < N + 1; i++) {
-            sb.append(answer.get(i)).append(" ");
         }
 
         bw.write(sb.toString());
