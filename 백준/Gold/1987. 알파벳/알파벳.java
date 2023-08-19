@@ -1,28 +1,46 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-class Main {
+public class Main {
+
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringTokenizer tokenizer;
     static int R, C;
-    static String[] lines;
+    static char[][] lines;
     static int result;
     static int[] dx = {0, 1, 0, -1};
     static int[] dy = {1, 0, -1, 0};
     static boolean[] visited;
+    static int[][] dist;
 
-    public static void main(String args[]) throws Exception {
-        //System.setIn(new FileInputStream("src/src2/input.txt"));
-        Scanner scanner = new Scanner(System.in);
-        R = scanner.nextInt();
-        C = scanner.nextInt();
+    public static void main(String[] args) throws IOException {
+        init();
+
+        solution();
+
+        System.out.println(result);
+    }
+
+    private static void init() throws IOException {
+        tokenizer = new StringTokenizer(br.readLine());
+        R = Integer.parseInt(tokenizer.nextToken());
+        C = Integer.parseInt(tokenizer.nextToken());
+
         result = 0;
         visited = new boolean[27];
-        lines = new String[R];
-        for (int i = 0; i < R; i++) {
-            lines[i] = scanner.next();
-        }
-        visited[lines[0].charAt(0) - 'A'] = true;
-        dfs(0, 0, 1);
-        System.out.printf(String.valueOf(result));
+        lines = new char[R][C];
+        dist = new int[R][C];
 
+        for (int i = 0; i < R; i++) {
+            lines[i] = br.readLine().toCharArray();
+        }
+    }
+
+    private static void solution() {
+        visited[lines[0][0] - 'A'] = true;
+        dfs(0, 0, 1);
     }
 
     private static void dfs(int x, int y, int cnt) {
@@ -30,8 +48,8 @@ class Main {
         for (int i = 0; i < 4; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
-            if (nx >= 0 && ny >= 0 && nx < R && ny < C) {
-                int nextAlpha = lines[nx].charAt(ny) - 'A';
+            if (isInRange(nx, ny)) {
+                int nextAlpha = lines[nx][ny] - 'A';
                 if (!visited[nextAlpha]) {
                     visited[nextAlpha] = true;
                     dfs(nx, ny, cnt + 1);
@@ -39,5 +57,9 @@ class Main {
                 }
             }
         }
+    }
+
+    private static boolean isInRange(int x, int y) {
+        return x >= 0 && y >= 0 && x < R && y < C;
     }
 }
