@@ -17,6 +17,7 @@ public class Main {
         int M = Integer.parseInt(tokenizer.nextToken());
 
         int[] possible = new int[N + 1];
+        int[] semester = new int[N + 1];
 
         ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
         for (int i = 0; i < N + 1; i++) {
@@ -31,46 +32,31 @@ public class Main {
             possible[B]++;
         }
 
-        boolean[] visited = new boolean[N + 1];
-        Queue<Subject> queue = new ArrayDeque<>();
+        Queue<Integer> queue = new ArrayDeque<>();
         for (int i = 1; i < N + 1; i++) {
-            if(possible[i] == 0) {
-                queue.add(new Subject(1, i));
+            if (possible[i] == 0) {
+                queue.add(i);
+                semester[i] = 1;
             }
         }
 
         while (!queue.isEmpty()) {
-            Subject current = queue.poll();
+            int current = queue.poll();
 
-            if (possible[current.num] > 0 || visited[current.num]) {
-                continue;
-            }
-            visited[current.num] = true;
-            possible[current.num] = current.semester;
-
-            for (Integer next : graph.get(current.num)) {
+            for (Integer next : graph.get(current)) {
                 if (--possible[next] == 0) {
-                    queue.add(new Subject(current.semester + 1, next));
+                    queue.add(next);
+                    semester[next] = semester[current] + 1;
                 }
             }
         }
 
         for (int i = 1; i < N + 1; i++) {
-           sb.append(possible[i]).append(" ");
+            sb.append(semester[i]).append(" ");
         }
 
         bw.write(sb.toString());
         bw.close();
         br.close();
-    }
-
-    static class Subject {
-        int semester;
-        int num;
-
-        public Subject(int semester, int num) {
-            this.semester = semester;
-            this.num = num;
-        }
     }
 }
