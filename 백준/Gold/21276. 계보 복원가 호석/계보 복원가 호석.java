@@ -11,23 +11,23 @@ public class Main {
     public static void main(String[] args) throws IOException {
         int N = Integer.parseInt(br.readLine());
 
-        Queue<String> pq = new PriorityQueue<>();
+        ArrayList<String> peoples = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        ArrayList<PriorityQueue<Integer>> child = new ArrayList<>();
         tokenizer = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            pq.add(tokenizer.nextToken());
+            peoples.add(tokenizer.nextToken());
+            child.add(new PriorityQueue<>());
+            graph.add(new ArrayList<>());
         }
+        Collections.sort(peoples);
 
         Map<String, Integer> sequence = new HashMap<>();
-        String[] name = new String[N];
+        String[] sortedName = new String[N];
         int index = 0;
-        while (!pq.isEmpty()) {
-            name[index] = pq.peek();
-            sequence.put(pq.poll(), index++);
-        }
-
-        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
-        for (int i = 0; i < N; i++) {
-            graph.add(new ArrayList<>());
+        for (String people : peoples) {
+            sortedName[index] = people;
+            sequence.put(people, index++);
         }
 
         int[] inDegree = new int[N];
@@ -41,42 +41,39 @@ public class Main {
         }
 
         Queue<Integer> queue = new ArrayDeque<>();
-        ArrayList<String> ancestor = new ArrayList<>();
+        ArrayList<Integer> ancestor = new ArrayList<>();
         for (int i = 1; i < N; i++) {
             if (inDegree[i] == 0) {
                 queue.add(i);
-                ancestor.add(name[i]);
+                ancestor.add(i);
             }
         }
 
-        Collections.sort(ancestor);
-        sb.append(ancestor.size()).append("\n");
-        for (String anc : ancestor) {
-            sb.append(anc).append(" ");
-        }
-        sb.append("\n");
-
-        Map<String, PriorityQueue<String>> child = new HashMap<>();
         while (!queue.isEmpty()) {
             int cur = queue.poll();
             for (Integer next : graph.get(cur)) {
                 if (--inDegree[next] == 0) {
                     queue.add(next);
-                    PriorityQueue<String> l = child.getOrDefault(name[cur], new PriorityQueue<>());
-                    l.add(name[next]);
-                    child.put(name[cur], l);
+                    child.get(cur).add(next);
                 }
             }
         }
 
-        for (String n : name) {
-            sb.append(n).append(" ").append(child.getOrDefault(n, new PriorityQueue<>()).size()).append(" ");
-            for (String c : child.getOrDefault(n, new PriorityQueue<>())) {
-                sb.append(c).append(" ");
+        sb.append(ancestor.size()).append("\n");
+        for (int anc : ancestor) {
+            sb.append(sortedName[anc]).append(" ");
+        }
+        sb.append("\n");
+
+        for (int i = 0; i < N; i++) {
+            sb.append(sortedName[i]).append(" ");
+            sb.append(child.get(i).size()).append(" ");
+            PriorityQueue<Integer> pq = child.get(i);
+            while (!pq.isEmpty()) {
+                sb.append(sortedName[pq.poll()]).append(" ");
             }
             sb.append("\n");
         }
-
         bw.write(sb.toString());
         bw.close();
         br.close();
