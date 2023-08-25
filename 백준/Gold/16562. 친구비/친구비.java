@@ -10,7 +10,6 @@ public class Main {
     static StringBuilder sb = new StringBuilder();
     static int[] parent;
     static int[] A;
-    static int[] count;
 
     public static void main(String[] args) throws IOException {
         tokenizer = new StringTokenizer(br.readLine());
@@ -24,13 +23,11 @@ public class Main {
         }
 
         A = new int[N + 1];
-        count = new int[N + 1];
         tokenizer = new StringTokenizer(br.readLine());
         for (int i = 1; i <= N; i++) {
             A[i] = Integer.parseInt(tokenizer.nextToken());
         }
 
-        Arrays.fill(count, 1);
         for (int i = 0; i < M; i++) {
             tokenizer = new StringTokenizer(br.readLine());
             int v = Integer.parseInt(tokenizer.nextToken());
@@ -76,12 +73,8 @@ public class Main {
             return;
         }
         if (A[a] > A[b]) {
-            count[b] += count[a];
-            count[a] = 0;
             parent[a] = b;
         } else {
-            count[a] += count[b];
-            count[b] = 0;
             parent[b] = a;
         }
     }
