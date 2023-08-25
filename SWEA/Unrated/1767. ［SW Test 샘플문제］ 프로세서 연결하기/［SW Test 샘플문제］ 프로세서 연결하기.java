@@ -17,7 +17,6 @@ public class Solution {
     static int answer;
     static int maxCount;
     static ArrayList<Point> points;
-    static int c = 0;
 
     public static void main(String[] args) throws IOException {
         int T = Integer.parseInt(br.readLine());
@@ -33,7 +32,6 @@ public class Solution {
     }
 
     private static void dfs(int index, int count) {
-        c++;
         if (index == points.size()) {
             if (maxCount < count) {
                 maxCount = count;
@@ -83,7 +81,7 @@ public class Solution {
                 core[i][j] = Integer.parseInt(tokenizer.nextToken());
                 if (core[i][j] == 1) {
                     visited[i][j] = true;
-                    if (i != 0 && j != 0) {
+                    if (i != 0 || j != 0) {
                         points.add(new Point(i, j));
                     }
                 }
