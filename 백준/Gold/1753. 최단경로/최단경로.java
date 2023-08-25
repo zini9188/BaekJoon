@@ -33,7 +33,7 @@ public class Main {
         Arrays.fill(dist, MAX);
         dist[K] = 0;
 
-        PriorityQueue<Vertex> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o.cost));
+        PriorityQueue<Vertex> pq = new PriorityQueue<>();
         pq.add(new Vertex(K, 0));
         while (!pq.isEmpty()) {
             Vertex cur = pq.poll();
@@ -67,13 +67,18 @@ public class Main {
         br.close();
     }
 
-    static class Vertex {
+    static class Vertex implements Comparable<Vertex>{
         int num;
         int cost;
 
         public Vertex(int num, int cost) {
             this.num = num;
             this.cost = cost;
+        }
+
+        @Override
+        public int compareTo(Vertex o) {
+            return this.cost - o.cost;
         }
     }
 }
