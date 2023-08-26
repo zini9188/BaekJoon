@@ -158,22 +158,10 @@ public class Main {
             this.size = size;
             this.name = name;
         }
-
-        @Override
-        public String toString() {
-            return "Shark{" +
-                    "x=" + x +
-                    ", y=" + y +
-                    ", speed=" + speed +
-                    ", dir=" + dir +
-                    ", size=" + size +
-                    ", name=" + name +
-                    '}';
-        }
     }
 
     static class Area {
-        ArrayList<Shark> sharks = new ArrayList<>();
+        List<Shark> sharks = new LinkedList<>();
         int max;
 
         public Area(int max) {
