@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -15,21 +13,21 @@ public class Main {
         int A = Integer.parseInt(tokenizer.nextToken());
         int B = Integer.parseInt(tokenizer.nextToken());
 
-        Map<Integer, Boolean> map = new HashMap<>();
+        boolean[] visited = new boolean[100000001];
         tokenizer = new StringTokenizer(br.readLine());
         for (int i = 0; i < A; i++) {
-            map.put(Integer.valueOf(tokenizer.nextToken()), true);
+            visited[Integer.parseInt(tokenizer.nextToken())] = true;
         }
 
         int same = 0;
         tokenizer = new StringTokenizer(br.readLine());
         for (int i = 0; i < B; i++) {
-            int el = Integer.parseInt(tokenizer.nextToken());
-            if (map.containsKey(el)) {
+            if (visited[Integer.parseInt(tokenizer.nextToken())]) {
                 same++;
             }
         }
-        sb.append(A + B - 2 * same);        
+
+        sb.append(A + B - 2 * same);
         bw.write(sb.toString());
         bw.close();
         br.close();
