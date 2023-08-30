@@ -1,31 +1,38 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int T = Integer.parseInt(st.nextToken());
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer tokenizer;
+    static StringBuilder sb = new StringBuilder();
+
+    public static void main(String[] args) throws IOException {
+        int t = Integer.parseInt(br.readLine());
+
         int[][] dp = new int[31][31];
-
-        for (int i = 0; i < 31; i++) {
-            dp[i][i] = 1;
-            dp[i][1] = i;
-            dp[i][0] = 1;
+        for (int i = 1; i <= 30; i++) {
+            dp[1][i] = i;
         }
 
-        for (int i = 2; i < 31; i++) {
-            for (int j = 1; j < i; j++) {
-                dp[i][j] = dp[i - 1][j] + dp[i - 1][j - 1];
+        for (int i = 2; i <= 30; i++) {
+            for (int j = i; j <= 30; j++) {
+                if (i == j) {
+                    dp[i][j] = 1;
+                } else {
+                    dp[i][j] = dp[i][j - 1] + dp[i - 1][j - 1];
+                }
             }
         }
-        for (int test_case = 1; test_case <= T; test_case++) {
-            st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            System.out.println(dp[b][a]);
+
+        for (int i = 0; i < t; i++) {
+            tokenizer = new StringTokenizer(br.readLine());
+            sb.append(dp[Integer.parseInt(tokenizer.nextToken())][Integer.parseInt(tokenizer.nextToken())]).append("\n");
         }
+
+        bw.write(sb.toString());
+        bw.close();
+        br.close();
     }
 }
