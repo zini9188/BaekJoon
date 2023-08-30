@@ -35,7 +35,7 @@ public class Main {
 
     private static int bfs() {
         Queue<Node> q = new ArrayDeque<>();
-        int[][][] visited = new int[H][W][40];
+        int[][][] visited = new int[H][W][32];
         q.add(new Node(0, 0, 0));
         visited[0][0][0] = 1;
 
