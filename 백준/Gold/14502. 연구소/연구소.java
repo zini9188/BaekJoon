@@ -1,102 +1,117 @@
+import java.util.*;
 import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
 
 public class Main {
+    static int n, m, arr[][], tmpCnt = 0, cnt = 0, max = 0, wallCnt = 0;
+    static int dir[][] = {
+            { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }
+    };
+    static boolean visited[][];
+    static ArrayList<Node> virus = new ArrayList<>();
+    static Set<Integer> set = new HashSet<>();
 
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    static int N, M;
-    static int[][] lab;
-    static int[] dx = {1, -1, 0, 0};
-    static int[] dy = {0, 0, 1, -1};
-    static int answer = 0;
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String str[] = br.readLine().split(" ");
 
-    public static void main(String[] args) throws IOException {
-        StringTokenizer tokenizer = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(tokenizer.nextToken());
-        M = Integer.parseInt(tokenizer.nextToken());
-
-        lab = new int[N][M];
-        for (int i = 0; i < N; i++) {
-            tokenizer = new StringTokenizer(br.readLine());
-            for (int j = 0; j < M; j++) {
-                lab[i][j] = Integer.parseInt(tokenizer.nextToken());
-            }
-        }
-
-        buildWall(0, 0, 0);
-
-        bw.write(answer + "");
-        bw.flush();
-        bw.close();
-        br.close();
-    }
-
-    private static void buildWall(int nx, int ny, int count) {
-        if (count == 3) {
-            answer = Math.max(answer, spread());
-            return;
-        }
-
-        for (int i = nx; i < N; i++) {
-            for (int j = ny; j < M; j++) {
-                if (lab[i][j] == 0) {
-                    lab[i][j] = 1;
-                    buildWall(nx, ny, count + 1);
-                    lab[i][j] = 0;
+        n = Integer.parseInt(str[0]);
+        m = Integer.parseInt(str[1]);
+        visited = new boolean[n][m];
+        arr = new int[n][m];
+        for (int i = 0; i < n; i++) {
+            str = br.readLine().split(" ");
+            for (int k = 0; k < m; k++) {
+                arr[i][k] = Integer.parseInt(str[k]);
+                if (arr[i][k] == 1)
+                    wallCnt += 1;
+                if (arr[i][k] == 2) {
+                    virus.add(new Node(i, k));
                 }
             }
         }
-    }
 
-    private static int spread() {
-        int[][] copy = new int[N][M];
-        for (int i = 0; i < N; i++) {
-            copy[i] = lab[i].clone();
-        }
+        for (int a = 0; a < n * m - 2; a++) {
+            if (arr[a / m][a % m] != 0)
+                continue;
+            arr[a / m][a % m] = 1;
+            for (int b = a + 1; b < n * m - 1; b++) {
 
-        Queue<Point> virus = new LinkedList<>();
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                if (copy[i][j] == 2) {
-                    virus.add(new Point(i, j));
-                    while (!virus.isEmpty()) {
-                        Point cur = virus.poll();
-                        for (int dir = 0; dir < 4; dir++) {
-                            int nx = cur.x + dx[dir];
-                            int ny = cur.y + dy[dir];
-
-                            if (isInRange(nx, ny) && copy[nx][ny] == 0) {
-                                virus.add(new Point(nx, ny));
-                                copy[nx][ny] = 2;
-                            }
-                        }
+                if (arr[b / m][b % m] != 0)
+                    continue;
+                arr[b / m][b % m] = 1;
+                for (int c = b + 1; c < n * m; c++) {
+                    if (arr[c / m][c % m] != 0)
+                        continue;
+                    arr[c / m][c % m] = 1;
+                    // bfs
+                    cnt = virus.size();
+                    for (Node v : virus) {
+                        find(v.x, v.y);
                     }
+                    int tmpMax = n * m - wallCnt - cnt - 3;
+
+                    if (max < tmpMax)
+                        max = tmpMax;
+
+                    // if (!set.contains(max)) {
+                    // set.add(max);
+                    // System.out.println("=========");
+                    // System.out.println(max + " " + wallCnt + " " + cnt);
+                    // for (int i = 0; i < n; i++) {
+                    // for (int k = 0; k < m; k++) {
+                    // int tmp = 0;
+                    // if (arr[i][k] == 1)
+                    // tmp = 1;
+                    // else if (arr[i][k] == 2) {
+                    // tmp = 2;
+                    // } else if (visited[i][k] == true) {
+                    // tmp = 2;
+                    // }
+                    // System.out.print(tmp + " ");
+                    // }
+                    // System.out.println();
+                    // }
+                    // }
+                    for (int i = 0; i < n; i++) {
+                        Arrays.fill(visited[i], false);
+                    }
+                    cnt = 0;
+                    arr[c / m][c % m] = 0;
                 }
+                arr[b / m][b % m] = 0;
             }
+            arr[a / m][a % m] = 0;
         }
 
-        int count = 0;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                if (copy[i][j] == 0) {
-                    count++;
-                }
-            }
+        // Iterator<Integer> iter = set.iterator();
+        // while (iter.hasNext()) {
+        // System.out.print(iter.next() + " ");
+        // }
+        System.out.println(max);
+    }
+
+    static void find(int xx, int yy) {
+        for (int i = 0; i < 4; i++) {
+            int x = xx + dir[i][0];
+            int y = yy + dir[i][1];
+
+            if (x < 0 || y < 0 || x >= n || y >= m)
+                continue;
+            if (visited[x][y])
+                continue;
+            if (arr[x][y] != 0)
+                continue;
+            visited[x][y] = true;
+            cnt++;
+            find(x, y);
         }
-        return count;
     }
 
-    private static boolean isInRange(int x, int y) {
-        return x >= 0 && y >= 0 && x < N && y < M;
-    }
+    static class Node {
+        int x;
+        int y;
 
-    static class Point {
-        int x, y;
-
-        public Point(int x, int y) {
+        Node(int x, int y) {
             this.x = x;
             this.y = y;
         }
