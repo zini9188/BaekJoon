@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -9,16 +8,14 @@ public class Main {
     static StringTokenizer tokenizer;
     static StringBuilder sb = new StringBuilder();
 
-    public static void main(String[] args) throws IOException {
-        tokenizer = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(tokenizer.nextToken());
-        int M = Integer.parseInt(tokenizer.nextToken());
+    public static void main(String[] args) throws Exception {
+        int N = read();
+        int M = read();
 
         int[][] dp = new int[N + 1][M + 1];
         for (int i = 1; i <= N; i++) {
-            tokenizer = new StringTokenizer(br.readLine());
             for (int j = 1; j <= M; j++) {
-                dp[i][j] = Integer.parseInt(tokenizer.nextToken());
+                dp[i][j] = read();
             }
         }
 
@@ -33,4 +30,17 @@ public class Main {
         bw.close();
         br.close();
     }
+
+    private static int read() throws Exception {
+
+        int c, n = System.in.read() & 15;
+
+        while ((c = System.in.read()) > 32)
+            n = (n << 3) + (n << 1) + (c & 15);
+
+        if (c == 13) System.in.read();
+
+        return n;
+    }
+
 }
