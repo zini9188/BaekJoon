@@ -9,19 +9,23 @@ public class Main {
     static StringBuilder sb = new StringBuilder();
     static int n, m, t, s, g, h;
     static List<List<Node>> graph;
+    public static int readInt() throws IOException {
+        int c, n = System.in.read() & 15;
+        while ((c = System.in.read()) > 32) n = (n << 3) + (n << 1) + (c & 15);
+        if (c == 13) System.in.read();
+        return n;
+    }
 
     public static void main(String[] args) throws IOException {
-        int T = Integer.parseInt(br.readLine());
+        int T = readInt();
         for (int i = 0; i < T; i++) {
-            tokenizer = new StringTokenizer(br.readLine());
-            n = Integer.parseInt(tokenizer.nextToken());
-            m = Integer.parseInt(tokenizer.nextToken());
-            t = Integer.parseInt(tokenizer.nextToken());
+            n = readInt();
+            m = readInt();
+            t = readInt();
 
-            tokenizer = new StringTokenizer(br.readLine());
-            s = Integer.parseInt(tokenizer.nextToken());
-            g = Integer.parseInt(tokenizer.nextToken());
-            h = Integer.parseInt(tokenizer.nextToken());
+            s = readInt();
+            g = readInt();
+            h = readInt();
 
             graph = new ArrayList<>();
             for (int j = 0; j <= n; j++) {
@@ -29,17 +33,16 @@ public class Main {
             }
 
             for (int j = 0; j < m; j++) {
-                tokenizer = new StringTokenizer(br.readLine());
-                int a = Integer.parseInt(tokenizer.nextToken());
-                int b = Integer.parseInt(tokenizer.nextToken());
-                int d = Integer.parseInt(tokenizer.nextToken());
+                int a = readInt();
+                int b = readInt();
+                int d = readInt();
                 graph.get(a).add(new Node(b, d));
                 graph.get(b).add(new Node(a, d));
             }
 
             List<Integer> targets = new ArrayList<>();
             for (int j = 0; j < t; j++) {
-                targets.add(Integer.valueOf(br.readLine()));
+                targets.add(readInt());
             }
 
             int[] dist = new int[n + 1];
