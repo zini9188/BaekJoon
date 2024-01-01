@@ -18,6 +18,9 @@ public class Main {
             graph.add(new ArrayList<>());
         }
 
+        double[] dist = new double[N + 1];
+        Arrays.fill(dist, 987654321);
+
         List<double[]> positions = new ArrayList<>();
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
@@ -33,9 +36,9 @@ public class Main {
                     continue;
                 }
 
-                double dist = getDistance(positions.get(i), positions.get(j));
-                graph.get(i + 1).add(new Edge(j + 1, dist));
-                graph.get(j + 1).add(new Edge(i + 1, dist));
+                double d = getDistance(positions.get(i), positions.get(j));
+                graph.get(i + 1).add(new Edge(j + 1, d));
+                graph.get(j + 1).add(new Edge(i + 1, d));
             }
         }
 
@@ -59,10 +62,12 @@ public class Main {
             }
             visited[cur.pos] = true;
             ans += cur.dist;
+            dist[cur.pos] = cur.dist;
 
             for (Edge next : graph.get(cur.pos)) {
-                if (!visited[next.pos]) {
+                if (!visited[next.pos] && dist[next.pos] > next.dist) {
                     pq.add(next);
+                    dist[next.pos] = next.dist;
                 }
             }
         }
