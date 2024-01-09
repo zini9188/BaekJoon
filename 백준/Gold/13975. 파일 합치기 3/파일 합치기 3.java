@@ -3,20 +3,18 @@ import java.util.*;
 
 public class Main {
 
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    static StringTokenizer st;
     static StringBuilder sb = new StringBuilder();
-
+    static FastReader fr = new FastReader();
+    
     public static void main(String[] args) throws IOException {
-        int T = Integer.parseInt(br.readLine());
+        int T = fr.nextInt();
         for (int tc = 0; tc < T; tc++) {
-            int K = Integer.parseInt(br.readLine());
+            int K = fr.nextInt();
 
-            st = new StringTokenizer(br.readLine());
             Queue<Long> pq = new PriorityQueue<>();
             for (int page = 0; page < K; page++) {
-                pq.add(Long.valueOf(st.nextToken()));
+                pq.add(fr.nextLong());
             }
 
             long sum = 0;
@@ -30,6 +28,33 @@ public class Main {
         }
         bw.write(sb.toString());
         bw.close();
-        br.close();
+    }
+
+    static class FastReader {
+        BufferedReader br;
+        StringTokenizer st;
+
+        public FastReader() {
+            br = new BufferedReader(new InputStreamReader(System.in));
+        }
+
+        String next() {
+            while (st == null || !st.hasMoreElements()) {
+                try {
+                    st = new StringTokenizer(br.readLine());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return st.nextToken();
+        }
+
+        int nextInt() {
+            return Integer.parseInt(next());
+        }
+
+        long nextLong() {
+            return Long.parseLong(next());
+        }
     }
 }
