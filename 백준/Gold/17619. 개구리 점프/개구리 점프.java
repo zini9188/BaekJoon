@@ -15,13 +15,14 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int Q = Integer.parseInt(st.nextToken());
 
-        parent = new int[N];
-        for (int i = 0; i < N; i++) {
+        parent = new int[N + 1];
+        for (int i = 1; i <= N; i++) {
             parent[i] = i;
         }
 
         points = new ArrayList<>();
-        for (int i = 0; i < N; i++) {
+        points.add(new Point(-1, -1, -1, -1));
+        for (int i = 1; i <= N; i++) {
             st = new StringTokenizer(br.readLine());
             int x1 = Integer.parseInt(st.nextToken());
             int x2 = Integer.parseInt(st.nextToken());
@@ -30,19 +31,21 @@ public class Main {
         }
         Collections.sort(points);
 
-        for (int i = 0; i < N - 1; i++) {
-            Point a = points.get(i);
-            Point b = points.get(i + 1);
+        for (int i = 1; i < N; i++) {
+            for (int j = i + 1; j <= N; j++) {
+                Point a = points.get(i);
+                Point b = points.get(j);
 
-            if (a.x2 >= b.x1) {
-                union(a.idx, b.idx);
+                if (a.x2 >= b.x1) {
+                    union(a.idx, b.idx);
+                }
             }
         }
 
         for (int i = 0; i < Q; i++) {
             st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken()) - 1;
-            int b = Integer.parseInt(st.nextToken()) - 1;
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
 
             int fa = find(a);
             int fb = find(b);
@@ -62,18 +65,17 @@ public class Main {
         return parent[x] = find(parent[x]);
     }
 
-    static boolean union(int a, int b) {
+    static void union(int a, int b) {
         a = find(a);
         b = find(b);
         if (a == b) {
-            return true;
+            return;
         }
         if (a > b) {
             parent[a] = b;
         } else {
             parent[b] = a;
         }
-        return false;
     }
 
     static class Point implements Comparable<Point> {
