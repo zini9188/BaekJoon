@@ -31,14 +31,17 @@ public class Main {
         }
         Collections.sort(points);
 
-        for (int i = 1; i < N; i++) {
-            for (int j = i + 1; j <= N; j++) {
-                Point a = points.get(i);
-                Point b = points.get(j);
-
-                if (a.x2 >= b.x1) {
-                    union(a.idx, b.idx);
+        int idx = 1, end = getPoint(1).x2;
+        for (int i = 2; i <= N; i++) {
+            if(getPoint(i).x1 <= end){
+                union(getPoint(idx).idx, getPoint(i).idx);
+                if(getPoint(i).x2 > end){
+                    idx = i;
+                    end = getPoint(i).x2;
                 }
+            }else{
+                idx = i;
+                end = getPoint(i).x2;
             }
         }
 
@@ -56,6 +59,10 @@ public class Main {
         bw.write(sb.toString());
         bw.close();
         br.close();
+    }
+
+    private static Point getPoint(int i) {
+        return points.get(i);
     }
 
     static int find(int x) {
