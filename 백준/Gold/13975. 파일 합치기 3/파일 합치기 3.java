@@ -5,8 +5,8 @@ public class Main {
 
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     static StringBuilder sb = new StringBuilder();
-    static FastReader fr = new FastReader();
-    
+    static Reader fr = new Reader();
+
     public static void main(String[] args) throws IOException {
         int T = fr.nextInt();
         for (int tc = 0; tc < T; tc++) {
@@ -28,33 +28,79 @@ public class Main {
         }
         bw.write(sb.toString());
         bw.close();
+        fr.close();
     }
 
-    static class FastReader {
-        BufferedReader br;
-        StringTokenizer st;
+    static class Reader
+    {
+        final private int BUFFER_SIZE = 1 << 16;
+        private DataInputStream din;
+        private byte[] buffer;
+        private int bufferPointer, bytesRead;
 
-        public FastReader() {
-            br = new BufferedReader(new InputStreamReader(System.in));
+        public Reader()
+        {
+            din = new DataInputStream(System.in);
+            buffer = new byte[BUFFER_SIZE];
+            bufferPointer = bytesRead = 0;
         }
 
-        String next() {
-            while (st == null || !st.hasMoreElements()) {
-                try {
-                    st = new StringTokenizer(br.readLine());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        public int nextInt() throws IOException
+        {
+            int ret = 0;
+            byte c = read();
+            while (c <= ' ')
+                c = read();
+            boolean neg = (c == '-');
+            if (neg)
+                c = read();
+            do
+            {
+                ret = ret * 10 + c - '0';
+            } while ((c = read()) >= '0' && c <= '9');
+
+            if (neg)
+                return -ret;
+            return ret;
+        }
+
+        public long nextLong() throws IOException
+        {
+            long ret = 0;
+            byte c = read();
+            while (c <= ' ')
+                c = read();
+            boolean neg = (c == '-');
+            if (neg)
+                c = read();
+            do {
+                ret = ret * 10 + c - '0';
             }
-            return st.nextToken();
+            while ((c = read()) >= '0' && c <= '9');
+            if (neg)
+                return -ret;
+            return ret;
         }
 
-        int nextInt() {
-            return Integer.parseInt(next());
+        private void fillBuffer() throws IOException
+        {
+            bytesRead = din.read(buffer, bufferPointer = 0, BUFFER_SIZE);
+            if (bytesRead == -1)
+                buffer[0] = -1;
         }
 
-        long nextLong() {
-            return Long.parseLong(next());
+        private byte read() throws IOException
+        {
+            if (bufferPointer == bytesRead)
+                fillBuffer();
+            return buffer[bufferPointer++];
+        }
+
+        public void close() throws IOException
+        {
+            if (din == null)
+                return;
+            din.close();
         }
     }
 }
