@@ -46,7 +46,7 @@ public class Main {
                     continue;
                 }
 
-                if (cur.x == 0 && cur.y == MAX_SIZE - 1) {
+                if (currentWalls.isEmpty() || cur.x == 0 && cur.y == MAX_SIZE - 1) {
                     return 1;
                 }
 
