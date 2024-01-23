@@ -36,9 +36,11 @@ public class Main {
     private static int bfs() {
         Queue<Point> person = new ArrayDeque<>();
         person.add(new Point(MAX_SIZE - 1, 0));
+        boolean[][] visited = new boolean[MAX_SIZE][MAX_SIZE];
         while (!person.isEmpty()) {
             int size = person.size();
 
+            visited = new boolean[MAX_SIZE][MAX_SIZE];
             for (int i = 0; i < size; i++) {
                 Point cur = person.poll();
 
@@ -53,11 +55,12 @@ public class Main {
                 for (int dir = 0; dir < 9; dir++) {
                     int nx = cur.x + dx[dir];
                     int ny = cur.y + dy[dir];
-                    if (outRange(nx, ny) || board[nx][ny] == WALL) {
+                    if (outRange(nx, ny) || board[nx][ny] == WALL || visited[nx][ny]) {
                         continue;
                     }
 
                     person.add(new Point(nx, ny));
+                    visited[nx][ny] = true;
                 }
             }
 
