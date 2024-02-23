@@ -1,58 +1,92 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.StringTokenizer;
 
 public class Main {
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    static StringTokenizer st;
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
-        st = new StringTokenizer(br.readLine());
-        int M = Integer.parseInt(st.nextToken());
-        int N = Integer.parseInt(st.nextToken());
+        Reader reader = new Reader();
+        int M = reader.nextInt();
+        int N = reader.nextInt();
 
-        int[] temp = new int[2 * M - 1];
         int[] arr = new int[2 * M - 1];
-        Arrays.fill(arr, 1);
         for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            int zero = Integer.parseInt(st.nextToken());
-            int one = Integer.parseInt(st.nextToken());
-            int two = Integer.parseInt(st.nextToken());
+            int zero = reader.nextInt();
+            int one = reader.nextInt();
+            int two = reader.nextInt();
 
             int idx = zero;
             int sum = 1;
-
             if (one > 0) {
-                temp[idx]++;
+                arr[idx]++;
                 idx += one;
                 sum--;
             }
 
             if (two > 0) {
-                temp[idx] += 1 + sum;
+                arr[idx] += 1 + sum;
             }
         }
 
-        for (int i = 0; i < 2 * M - 1; i++) {
-            for (int j = 0; j <= i; j++) {
-                arr[i] += temp[j];
-            }
+        arr[0]++;
+        for (int i = 1; i < 2 * M - 1; i++) {
+            arr[i] += arr[i - 1];
         }
 
+        StringBuilder repeat = new StringBuilder();
+        for (int j = M; j < 2 * M - 1; j++) {
+            repeat.append(arr[j]).append(" ");
+        }
         for (int i = M - 1; i >= 0; i--) {
-            sb.append(arr[i]).append(" ");
-            for (int j = M; j < 2 * M - 1; j++) {
-                sb.append(arr[j]).append(" ");
-            }
-            sb.append("\n");
+            sb.append(arr[i]).append(" ").append(repeat).append("\n");
         }
 
         bw.write(sb.toString());
         bw.close();
         br.close();
+    }
+
+    static class Reader {
+        final private int BUFFER_SIZE = 1 << 16;
+        private DataInputStream din;
+        private byte[] buffer;
+        private int bufferPointer, bytesRead;
+
+        public Reader() {
+            din = new DataInputStream(System.in);
+            buffer = new byte[BUFFER_SIZE];
+            bufferPointer = bytesRead = 0;
+        }
+
+        public int nextInt() throws IOException {
+            int ret = 0;
+            byte c = read();
+            while (c <= ' ')
+                c = read();
+            boolean neg = (c == '-');
+            if (neg)
+                c = read();
+            do {
+                ret = ret * 10 + c - '0';
+            } while ((c = read()) >= '0' && c <= '9');
+
+            if (neg)
+                return -ret;
+            return ret;
+        }
+
+        private void fillBuffer() throws IOException {
+            bytesRead = din.read(buffer, bufferPointer = 0, BUFFER_SIZE);
+            if (bytesRead == -1)
+                buffer[0] = -1;
+        }
+
+        private byte read() throws IOException {
+            if (bufferPointer == bytesRead)
+                fillBuffer();
+            return buffer[bufferPointer++];
+        }
     }
 }
