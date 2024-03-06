@@ -34,11 +34,15 @@ public class Main {
             }
         }
 
-        Queue<Point> q = new PriorityQueue<>();
-        q.add(new Point(hx, hy, 1, 0));
+        Queue<Point> q = new ArrayDeque<>();
+        q.add(new Point(hx, hy, 1));
         dist[hx][hy][1] = 0;
         while (!q.isEmpty()) {
             Point cur = q.poll();
+
+            if (cur.x == ex && cur.y == ey) {
+                break;
+            }
 
             for (int i = 0; i < 4; i++) {
                 int nx = cur.x + dx[i];
@@ -53,9 +57,9 @@ public class Main {
                     nc--;
                 }
 
-                if (dist[nx][ny][nc] > cur.move + 1) {
-                    dist[nx][ny][nc] = cur.move + 1;
-                    q.add(new Point(nx, ny, nc, dist[nx][ny][nc]));
+                if (dist[nx][ny][nc] > dist[cur.x][cur.y][cur.cane] + 1) {
+                    dist[nx][ny][nc] = dist[cur.x][cur.y][cur.cane] + 1;
+                    q.add(new Point(nx, ny, nc));
                 }
             }
         }
@@ -71,20 +75,14 @@ public class Main {
         return x < 1 || y < 1 || x > N || y > M;
     }
 
-    static class Point implements Comparable<Point> {
+    static class Point {
 
-        int x, y, cane, move;
+        int x, y, cane;
 
-        public Point(int x, int y, int cane, int move) {
+        public Point(int x, int y, int cane) {
             this.x = x;
             this.y = y;
             this.cane = cane;
-            this.move = move;
-        }
-
-        @Override
-        public int compareTo(Point o) {
-            return move - o.move;
         }
     }
 }
