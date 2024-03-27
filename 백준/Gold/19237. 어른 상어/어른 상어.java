@@ -11,7 +11,6 @@ public class Main {
     static Smell[][] map;
     static Point[][] sharkPos;
     static Point[] sharks;
-    // 상하좌우 -> 1,2,3,4 -> 0,1,2,3
     static int[] dx = {-1, 1, 0, 0}, dy = {0, 0, -1, 1};
     static int[][][] directions;
     static int outShark = 1;
@@ -41,14 +40,11 @@ public class Main {
             }
         }
 
-//        System.out.println(Arrays.deepToString(map).replaceAll("],", "\n"));
-        // 상어가 바라보는 방향
         st = new StringTokenizer(br.readLine());
         for (int i = 1; i <= M; i++) {
             sharks[i].lookDir = Integer.parseInt(st.nextToken()) - 1;
         }
 
-        // 상어의 방향에 따른 우선순위
         for (int i = 1; i <= M; i++) {
             for (int j = 0; j < 4; j++) {
                 st = new StringTokenizer(br.readLine());
@@ -58,20 +54,14 @@ public class Main {
             }
         }
 
-        int i = find();
-        System.out.println(i);
-
+        sb.append(find());
         bw.write(sb.toString());
         bw.close();
         br.close();
     }
 
     private static int find() {
-        // 최대 1000초
         for (int time = 1; time <= 1000; time++) {
-//            System.out.println("현재 시간 : " + time);
-
-            // 큐에 번호 큰 상어부터 이동함
             Queue<Point> q = new ArrayDeque<>();
             for (int j = M; j >= 1; j--) {
                 if (isGone[j]) {
@@ -80,32 +70,20 @@ public class Main {
 
                 Point np = findNextPoint(j, sharks[j], time);
                 q.add(np);
-
-//                System.out.println(np);
             }
-//            System.out.println();
 
-            // 큐 돌면서 갱신함
             while (!q.isEmpty()) {
                 Point cur = q.poll();
 
-                // 상어 있으면 잡아먹음
                 if (sharkPos[cur.x][cur.y] != null) {
-//                    System.out.println(sharkPos[cur.x][cur.y] + "는 먹힌다. " + cur.sharkIdx + "에게");
                     isGone[sharkPos[cur.x][cur.y].sharkIdx] = true;
                     outShark++;
                 }
                 sharkPos[cur.x][cur.y] = new Point(cur.sharkIdx, cur.x, cur.y, cur.lookDir);
-                sharks[cur.sharkIdx].x = cur.x;
-                sharks[cur.sharkIdx].y = cur.y;
-                sharks[cur.sharkIdx].lookDir = cur.lookDir;
+                sharks[cur.sharkIdx].update(cur);
                 map[cur.x][cur.y] = new Smell(cur.sharkIdx, time + K);
             }
 
-//            System.out.println(
-//                    Arrays.deepToString(map).replaceAll("],", "\n")
-//                            .replaceAll("null", "{- , -} "));
-            // 잡아먹힌 상어가 M마리 -> 1번만 남았다는 뜻
             if (outShark == M) {
                 return time;
             }
@@ -114,7 +92,6 @@ public class Main {
     }
 
     private static Point findNextPoint(int sharkIdx, Point shark, int time) {
-        // 현재 상어 방향에서 상어가 보는 방향에 따른 다음 방향 for문
         for (int nd : directions[sharkIdx][sharks[sharkIdx].lookDir]) {
             int nx = shark.x + dx[nd];
             int ny = shark.y + dy[nd];
@@ -123,12 +100,10 @@ public class Main {
                 continue;
             }
 
-            // 냄새 있는데, 만들어진 시간이 지금보다 이전이면
             if (map[nx][ny] != null && map[nx][ny].makingTime < time) {
                 map[nx][ny] = null;
             }
 
-            // 냄새 없으면 상어 움직이고 현재 좌표 없앰
             if (map[nx][ny] == null) {
                 sharkPos[shark.x][shark.y] = null;
                 return new Point(sharkIdx, nx, ny, nd);
@@ -143,7 +118,6 @@ public class Main {
                 continue;
             }
 
-            // 냄새 있고, 본인 번호일때만 가능
             if (map[nx][ny] != null && map[nx][ny].sharkIndex == sharkIdx) {
                 sharkPos[shark.x][shark.y] = null;
                 return new Point(sharkIdx, nx, ny, nd);
@@ -169,10 +143,10 @@ public class Main {
             this.lookDir = lookDir;
         }
 
-        @Override
-        public String toString() {
-            return "Point{" + "sharkIdx=" + sharkIdx + ", x=" + x + ", y=" + y + ", lookDir="
-                    + lookDir + '}';
+        public void update(Point p) {
+            this.x = p.x;
+            this.y = p.y;
+            this.lookDir = p.lookDir;
         }
     }
 
@@ -183,23 +157,6 @@ public class Main {
         public Smell(int sharkIndex, int makingTime) {
             this.sharkIndex = sharkIndex;
             this.makingTime = makingTime;
-        }
-
-        @Override
-        public String toString() {
-            return "{" + sharkIndex +
-                    ", " + makingTime +
-                    '}';
-        }
-    }
-
-    static class Direction {
-
-        int[][] dir;
-
-        public Direction() {
-            // 4개의 방향에 따른 4개의 우선순위
-            this.dir = new int[4][4];
         }
     }
 }
