@@ -29,30 +29,16 @@ public class Main {
 
                 int num = Integer.parseInt(st.nextToken());
 
-                if (lq.isEmpty()) {
+                if (lq.size() == rq.size()) {
                     lq.add(num);
-                } else if (rq.isEmpty()) {
-                    if (lq.peek() < num) {
-                        rq.add(num);
-                    } else {
-                        lq.add(num);
-                        rq.add(lq.poll());
-                    }
                 } else {
-                    if (rq.size() == lq.size()) {
-                        if (rq.peek() < num) {
-                            rq.add(num);
-                            lq.add(rq.poll());
-                        } else {
-                            lq.add(num);
-                        }
-                    } else if (lq.size() > rq.size()) {
-                        if (num > lq.peek()) {
-                            rq.add(num);
-                        } else {
-                            lq.add(num);
-                            rq.add(lq.poll());
-                        }
+                    rq.add(num);
+                }
+
+                if (!rq.isEmpty()) {
+                    if (!lq.isEmpty() && lq.peek() > rq.peek()) {
+                        lq.add(rq.poll());
+                        rq.add(lq.poll());
                     }
                 }
 
