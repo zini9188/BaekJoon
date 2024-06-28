@@ -1,25 +1,28 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.StringTokenizer;
 
 public class Main {
 
-    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     private static final StringBuilder sb = new StringBuilder();
-    private static StringTokenizer st;
+    private static int N;
+    private static int[] fruits;
 
     public static void main(String[] args) throws IOException {
-        int N = Integer.parseInt(br.readLine());
-        st = new StringTokenizer(br.readLine());
+        input();
+        int ans = solution();
+        output(ans);
+    }
 
-        int[] fruits = new int[N];
-        for (int i = 0; i < N; i++) {
-            fruits[i] = Integer.parseInt(st.nextToken());
-        }
+    private static void output(int ans) throws IOException {
+        sb.append(ans);
+        bw.write(sb.toString());
+        bw.close();
+    }
+
+    private static int solution() {
+        int ans = 0;
         int cnt = 0, left = 0, right = 0;
         int[] use = new int[10];
-        int ans = 0;
         while (left <= right && right < N) {
             if (cnt <= 2) {
                 if (use[fruits[right++]]++ == 0) {
@@ -34,10 +37,25 @@ public class Main {
                 }
             }
         }
+        return ans;
+    }
 
-        sb.append(ans);
-        bw.write(sb.toString());
-        bw.close();
-        br.close();
+    private static void input() throws IOException {
+        N = read();
+        fruits = new int[N];
+        for (int i = 0; i < N; i++) {
+            fruits[i] = read();
+        }
+    }
+
+    private static int read() throws IOException {
+        int c, n = System.in.read() & 15;
+        while ((c = System.in.read()) >= 48) {
+            n = (n << 3) + (n << 1) + (c & 15);
+        }
+        if (c == 13) {
+            System.in.read();
+        }
+        return n;
     }
 }
