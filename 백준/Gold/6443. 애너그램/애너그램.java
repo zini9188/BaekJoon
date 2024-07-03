@@ -26,12 +26,6 @@ public class Main {
             }
 
             dfs(0);
-
-            List<String> answer = new ArrayList<>(set);
-            Collections.sort(answer);
-            for (String s : answer) {
-                sb.append(s).append("\n");
-            }
         }
 
         bw.write(sb.toString());
@@ -41,7 +35,7 @@ public class Main {
 
     private static void dfs(int depth) {
         if (depth == len) {
-            set.add(new String(temp));
+            sb.append(new String(temp)).append("\n");
             return;
         }
 
