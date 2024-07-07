@@ -11,7 +11,7 @@ public class Main {
     private static boolean[] visited;
 
     public static void main(String[] args) throws IOException {
-        int T = Integer.parseInt(br.readLine());
+        int T = read();
         for (int i = 0; i < T; i++) {
             input();
             solution();
@@ -22,21 +22,26 @@ public class Main {
         br.close();
     }
 
-    private static void input() throws IOException {
-        st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+    private static int read() throws IOException {
+        int c, n = System.in.read() & 15;
+        while ((c = System.in.read()) > 32) {
+            n = (n << 3) + (n << 1) + (c & 15);
+        }
+        return n;
+    }
 
+    private static void input() throws IOException {
+        int N = read();
+        int M = read();
         graph = new ArrayList<>();
         for (int i = 0; i <= N; i++) {
             graph.add(new ArrayList<>());
         }
 
         for (int i = 0; i < M; i++) {
-            st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            int c = Integer.parseInt(st.nextToken());
+            int a = read();
+            int b = read();
+            int c = read();
             graph.get(a).add(new Bridge(b, c));
             graph.get(b).add(new Bridge(a, c));
         }
@@ -60,7 +65,7 @@ public class Main {
             sum += dfs(next.v, next.w);
         }
 
-        if(cur == 1){
+        if (cur == 1) {
             return sum;
         }
 
