@@ -39,7 +39,7 @@ public class Main {
     }
 
     private static void input() throws IOException {
-        int N = Integer.parseInt(br.readLine());
+        int N = read();
 
         weight = new long[N + 1];
         visited = new boolean[N + 1];
@@ -50,16 +50,32 @@ public class Main {
         }
 
         for (int i = 0; i < N - 1; i++) {
-            st = new StringTokenizer(br.readLine());
-            int f = Integer.parseInt(st.nextToken());
-            int t = Integer.parseInt(st.nextToken());
+            int f = read();
+            int t = read();
             graph.get(f).add(t);
             graph.get(t).add(f);
         }
 
-        st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            weight[i] = Integer.parseInt(st.nextToken());
+            weight[i] = read();
         }
+    }
+
+    private static int read() throws IOException {
+        int c = System.in.read() & 15, n;
+        boolean flag = c == 13;
+        if (flag) {
+            c = 0;
+        }
+        
+        while ((n = System.in.read()) > 32) {
+            c = (c * 10) + (n & 15);
+        }
+        
+        if (n == 13) {
+            System.in.read();
+        }
+        
+        return flag ? -c : c;
     }
 }
