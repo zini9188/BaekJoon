@@ -97,24 +97,31 @@ public class Main {
     }
 
     private static void input() throws IOException {
-        st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        N = read();
+        M = read();
 
         area = new ArrayDeque<>();
         map = new int[N][M];
 
         for (int i = 0; i < N; i++) {
-            String input = br.readLine();
             for (int j = 0; j < M; j++) {
-                map[i][j] = input.charAt(j) - '0';
+                map[i][j] = System.in.read() - '0';
                 if (map[i][j] == 0) {
                     area.add(new Point(i, j));
                 } else {
                     map[i][j] = -1;
                 }
             }
+            System.in.read();
         }
+    }
+
+    private static int read() throws IOException {
+        int c, n = System.in.read() & 15;
+        while ((c = System.in.read()) > 32) {
+            n = (n << 3) + (n << 1) + (c & 15);
+        }
+        return n;
     }
 
     private static class Point {
