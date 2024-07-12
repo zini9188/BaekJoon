@@ -9,7 +9,7 @@ public class Main {
     private static StringTokenizer st;
     private static int N;
     private static int K;
-    private static int[] dolls;
+    private static int[] d;
 
     public static void main(String[] args) throws IOException {
         input();
@@ -20,21 +20,21 @@ public class Main {
     }
 
     private static void solution() {
-        int right = 0, ans = N + 1, cnt = 0;
+        int r = 0, ans = N + 1, c = 0;
 
-        for (int s = 1; s <= N; s++) {
-            if (dolls[s - 1] == 1) {
-                cnt--;
+        for (int l = 1; l <= N; l++) {
+            if (d[l - 1] == 1) {
+                c--;
             }
 
-            while (right + 1 <= N && cnt < K) {
-                if (dolls[++right] == 1) {
-                    cnt++;
+            while (r + 1 <= N && c < K) {
+                if (d[++r] == 1) {
+                    c++;
                 }
             }
 
-            if (cnt == K) {
-                ans = Math.min(ans, right - s + 1);
+            if (c == K) {
+                ans = Math.min(ans, r - l + 1);
             }
         }
 
@@ -49,9 +49,9 @@ public class Main {
         N = read();
         K = read();
 
-        dolls = new int[N + 1];
+        d = new int[N + 1];
         for (int i = 1; i <= N; i++) {
-            dolls[i] = read();
+            d[i] = read();
         }
     }
 
