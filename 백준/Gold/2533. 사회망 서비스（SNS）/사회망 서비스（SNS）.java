@@ -13,8 +13,7 @@ public class Main {
     private static boolean[] visited;
 
     public static void main(String[] args) throws IOException {
-        st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
+        N = read();
 
         graph = new ArrayList<>();
         for (int i = 0; i <= N; i++) {
@@ -22,9 +21,8 @@ public class Main {
         }
 
         for (int i = 0; i < N - 1; i++) {
-            st = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(st.nextToken());
-            int v = Integer.parseInt(st.nextToken());
+            int u = read();
+            int v = read();
             graph.get(u).add(v);
             graph.get(v).add(u);
         }
@@ -54,5 +52,12 @@ public class Main {
             dp[cur][0] += Math.min(dp[child][0], dp[child][1]);
             dp[cur][1] += dp[child][0];
         }
+    }
+    private static int read() throws IOException {
+        int c, n = System.in.read() & 15;
+        while ((c = System.in.read()) > 32) {
+            n = (n << 3) + (n << 1) + (c & 15);
+        }
+        return n;
     }
 }
