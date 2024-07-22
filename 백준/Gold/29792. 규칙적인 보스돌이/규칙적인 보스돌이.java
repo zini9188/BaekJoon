@@ -7,25 +7,22 @@ public class Main {
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     static StringBuilder sb = new StringBuilder();
     static List<Boss> bosses;
-    static StringTokenizer st;
     static int N, M, K;
 
     public static void main(String[] args) throws IOException {
-        st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
+        N = readInt();
+        M = readInt();
+        K = readInt();
 
         ArrayList<Long> damages = new ArrayList<>();
         for (int i = 0; i < N; i++) {
-            damages.add(Long.parseLong(br.readLine()));
+            damages.add(readLong());
         }
         damages.sort(Collections.reverseOrder());
 
         bosses = new ArrayList<>();
         for (int i = 0; i < K; i++) {
-            st = new StringTokenizer(br.readLine());
-            bosses.add(new Boss(Long.parseLong(st.nextToken()), Integer.parseInt(st.nextToken())));
+            bosses.add(new Boss(readLong(), readInt()));
         }
 
         long[] dp;
@@ -51,6 +48,22 @@ public class Main {
         br.close();
     }
 
+    private static long readLong() throws IOException {
+        long c, n = System.in.read() & 15;
+        while ((c = System.in.read()) > 32) {
+            n = (n << 3) + (n << 1) + (c & 15);
+        }
+        return n;
+    }
+
+    private static int readInt() throws IOException {
+        int c, n = System.in.read() & 15;
+        while ((c = System.in.read()) > 32) {
+            n = (n << 3) + (n << 1) + (c & 15);
+        }
+        return n;
+    }
+    
     static class Boss {
 
         long P;
