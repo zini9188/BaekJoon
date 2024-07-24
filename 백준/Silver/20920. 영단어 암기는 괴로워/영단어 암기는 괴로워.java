@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -27,14 +26,12 @@ public class Main {
             set.add(word);
         }
 
-        List<String> sortedWords = set.stream()
-                .sorted(new Comp())
-                .collect(Collectors.toList());
+        PriorityQueue<String> pq = new PriorityQueue<>(new Comp());
+        pq.addAll(set);
 
-        for (String sortedWord : sortedWords) {
-            sb.append(sortedWord).append("\n");
+        while (!pq.isEmpty()) {
+            sb.append(pq.poll()).append("\n");
         }
-
         bw.write(sb.toString());
         bw.close();
         br.close();
