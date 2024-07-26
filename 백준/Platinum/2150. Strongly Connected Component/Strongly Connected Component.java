@@ -66,7 +66,7 @@ public class Main {
 
     private static void dfs(int x) {
         visited[x] = true;
-        Collections.sort(graph.get(x));
+//        Collections.sort(graph.get(x));
 
         for (Integer next : graph.get(x)) {
             if (!visited[next]) {
