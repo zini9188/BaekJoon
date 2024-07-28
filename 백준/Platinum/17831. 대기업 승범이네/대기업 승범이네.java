@@ -42,25 +42,20 @@ public class Main {
 
     private static void dfs(int x) {
         visited[x] = true;
-        int sum = 0;
-        for (Integer next : graph.get(x)) {
+        int sum = 0, max = 0;
+        for (int next : graph.get(x)) {
             if (!visited[next]) {
                 dfs(next);
                 dp[x][1] += Math.max(dp[next][0], dp[next][1]);
                 sum += Math.max(dp[next][0], dp[next][1]);
+                int temp = dp[next][1] + weight[next] * weight[x]
+                        - Math.max(dp[next][0], dp[next][1]);
+                if (temp > max) {
+                    max = temp;
+                }
             }
         }
-
-        int max = 0;
-        for (int select : graph.get(x)) {
-            int temp = sum - Math.max(dp[select][0], dp[select][1]) +
-                    dp[select][1] + weight[select] * weight[x];
-            if (temp > max) {
-                max = temp;
-            }
-        }
-
-        dp[x][0] = max;
+        dp[x][0] = sum + max;
     }
 
     private static int read() throws IOException {
