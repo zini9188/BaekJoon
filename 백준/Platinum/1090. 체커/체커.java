@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.*;
+import java.util.Arrays;
 
 public class Main {
 
@@ -14,22 +14,22 @@ public class Main {
             points[i] = new Point(read(), read());
         }
 
+        int[] dist = new int[N];
         int[] count = new int[N];
-        Arrays.fill(count, 987654321);
+        Arrays.fill(count, Integer.MAX_VALUE);
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 int tx = points[i].x;
                 int ty = points[j].y;
 
-                List<Integer> dist = new ArrayList<>();
                 for (int k = 0; k < N; k++) {
-                    dist.add(Math.abs(tx - points[k].x) + Math.abs(ty - points[k].y));
+                    dist[k] = Math.abs(tx - points[k].x) + Math.abs(ty - points[k].y);
                 }
-                Collections.sort(dist);
+                Arrays.sort(dist);
 
                 int sum = 0;
                 for (int k = 0; k < N; k++) {
-                    sum += dist.get(k);
+                    sum += dist[k];
                     count[k] = Math.min(count[k], sum);
                 }
             }
@@ -38,6 +38,7 @@ public class Main {
         for (int i = 0; i < N; i++) {
             sb.append(count[i]).append(" ");
         }
+        
         bw.write(sb.toString());
         bw.close();
         br.close();
@@ -53,7 +54,6 @@ public class Main {
     }
 
     private static class Point {
-
         int x, y;
 
         public Point(int x, int y) {
