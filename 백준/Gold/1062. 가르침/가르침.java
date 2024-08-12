@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
 
@@ -8,8 +6,7 @@ public class Main {
     private static final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     private static final StringBuilder sb = new StringBuilder();
     private static int N, K, ans, learn;
-    private static String[] words;
-    private static List<Character> alphabet;
+    private static int[] words;
 
     public static void main(String[] args) throws IOException {
         N = read();
@@ -20,19 +17,23 @@ public class Main {
             learn |= (1 << str.charAt(i) - 'a');
         }
 
-        alphabet = new ArrayList<>();
-        for (int i = 0; i < 26; i++) {
-            if ((learn & (1 << i)) == 0) {
-                alphabet.add((char) (i + 'a'));
+        if (K < 5) {
+            ans = 0;
+        } else if (K == 26) {
+            ans = N;
+        } else {
+            words = new int[N];
+            for (int i = 0; i < N; i++) {
+                String word = br.readLine();
+                int bit = 0;
+                for (char c : word.toCharArray()) {
+                    bit |= (1 << c - 'a');
+                }
+                words[i] = bit;
             }
+            dfs(0, 5);
         }
 
-        words = new String[N];
-        for (int i = 0; i < N; i++) {
-            words[i] = br.readLine();
-        }
-
-        dfs(0, 5);
         sb.append(ans);
         bw.write(sb.toString());
         bw.close();
@@ -42,25 +43,22 @@ public class Main {
     private static void dfs(int s, int k) {
         if (k == K) {
             int read = 0;
-            for (int i = 0; i < N; i++) {
-                read++;
-                for (char c : words[i].toCharArray()) {
-                    if ((learn & (1 << c - 'a')) == 0) {
-                        read--;
-                        break;
-                    }
+            for (int word : words) {
+                if ((word & learn) == word) {
+                    read++;
                 }
             }
-            ans = Math.max(ans, read);
+            if (read > ans) {
+                ans = read;
+            }
             return;
         }
 
-        for (int i = s; i < alphabet.size(); i++) {
-            int c = alphabet.get(i) - 'a';
-            if ((learn & (1 << c)) == 0) {
-                learn |= (1 << c);
+        for (int i = s; i < 26; i++) {
+            if ((learn & (1 << i)) == 0) {
+                learn |= (1 << i);
                 dfs(i, k + 1);
-                learn ^= (1 << c);
+                learn ^= (1 << i);
             }
         }
     }
