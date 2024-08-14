@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
 
@@ -14,24 +12,21 @@ public class Main {
         int n = read();
         int w = read();
 
-        List<int[]> result = new ArrayList<>();
+        int[] res = new int[2];
+        int cnt = 0;
         for (int i = 1; i < n; i++) {
-            for (int j = 1; j < n; j++) {
-                if (i + j != n) {
-                    continue;
-                }
-
-                if (a * i + j * b == w) {
-                    result.add(new int[]{i, j});
-                }
+            int j = n - i;
+            if (a * i + j * b == w) {
+                res[0] = i;
+                res[1] = j;
+                cnt++;
             }
         }
 
-        if (result.size() != 1) {
-            sb.append("-1");
-        } else {
-            int[] res = result.get(0);
+        if (cnt == 1) {
             sb.append(res[0]).append(" ").append(res[1]);
+        } else {
+            sb.append("-1");
         }
 
         bw.write(sb.toString());
