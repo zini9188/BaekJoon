@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class Main {
 
@@ -13,24 +15,19 @@ public class Main {
         for (int i = 0; i < N; i++) {
             abilities[i] = new Ability(read(), read(), read());
         }
+        Arrays.sort(abilities, Comparator.comparingInt(o -> o.i));
 
         int ans = Integer.MAX_VALUE;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
+                int cnt = 0;
+                int x = abilities[i].s;
+                int y = abilities[j].d;
                 for (int k = 0; k < N; k++) {
-                    int x = abilities[i].s;
-                    int y = abilities[j].d;
-                    int z = abilities[k].i;
-
-                    int cnt = 0;
-                    for (int l = 0; l < N; l++) {
-                        if (x >= abilities[l].s && y >= abilities[l].d && z >= abilities[l].i) {
-                            cnt++;
+                    if (x >= abilities[k].s && y >= abilities[k].d) {
+                        if (++cnt == K) {
+                            ans = Math.min(ans, x + y + abilities[k].i);
                         }
-                    }
-
-                    if (cnt == K) {
-                        ans = Math.min(ans, x + y + z);
                     }
                 }
             }
