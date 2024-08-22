@@ -10,7 +10,7 @@ public class Main {
         int N = read();
         int H = read();
 
-        int[] prefixSum = new int[H + 2];
+        int[] prefixSum = new int[H + 1];
         for (int i = 1; i <= N; i++) {
             int n = read();
 
@@ -19,24 +19,18 @@ public class Main {
                 prefixSum[n + 1]--;
             } else {
                 prefixSum[H - n + 1]++;
-                prefixSum[H + 1]--;
-            }
-        }
-
-        for (int i = 1; i <= H; i++) {
-            prefixSum[i] += prefixSum[i - 1];
-        }
-
-        int min = Integer.MAX_VALUE;
-        for (int i = 1; i <= H; i++) {
-            if (min > prefixSum[i]) {
-                min = prefixSum[i];
             }
         }
 
         int cnt = 0;
+        int min = Integer.MAX_VALUE;
         for (int i = 1; i <= H; i++) {
-            if (prefixSum[i] == min) {
+            prefixSum[i] += prefixSum[i - 1];
+
+            if (min > prefixSum[i]) {
+                min = prefixSum[i];
+                cnt = 1;
+            } else if(min == prefixSum[i]){
                 cnt++;
             }
         }
