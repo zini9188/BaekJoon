@@ -7,10 +7,6 @@ public class Main {
     private static final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     private static final StringBuilder sb = new StringBuilder();
     private static final int MAX = 987654321;
-    private static StringTokenizer st;
-    private static int N, M;
-    private static List<List<Node>> graph;
-    private static Map<Integer, int[]> distMap;
 
     public static void main(String[] args) throws IOException {
         int T = read();
@@ -25,36 +21,43 @@ public class Main {
     }
 
     private static void input() throws IOException {
-        N = read();
-        M = read();
+        int n = read();
+        int m = read();
 
-        graph = new ArrayList<>();
-        for (int i = 0; i <= N; i++) {
-            graph.add(new ArrayList<>());
+        int[][] dist = new int[n + 1][n + 1];
+        for (int i = 0; i <= n; i++) {
+            Arrays.fill(dist[i], MAX);
+            dist[i][i] = 0;
         }
-
-        for (int i = 0; i < M; i++) {
+        for (int i = 0; i < m; i++) {
             int a = read();
             int b = read();
             int c = read();
-            graph.get(a).add(new Node(b, c));
-            graph.get(b).add(new Node(a, c));
+            dist[a][b] = c;
+            dist[b][a] = c;
         }
 
-        distMap = new HashMap<>();
+        for (int k = 1; k <= n; k++) {
+            for (int i = 1; i <= n; i++) {
+                for (int j = 1; j <= n; j++) {
+                    dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
+                }
+            }
+        }
+
         int K = read();
+        List<Integer> student = new ArrayList<>();
         for (int i = 1; i <= K; i++) {
-            int currentRoom = read();
-            dijkstra(currentRoom);
+            student.add(read());
         }
 
-        int ans = Integer.MAX_VALUE;
-        int idx = N;
-        for (int i = N; i > 0; i--) {
+        int ans = MAX;
+        int idx = n;
+        for (int i = n; i > 0; i--) {
             int res = 0;
 
-            for (Integer key : distMap.keySet()) {
-                res += distMap.get(key)[i];
+            for (Integer stu : student) {
+                res += dist[stu][i];
             }
 
             if (ans >= res) {
@@ -66,48 +69,11 @@ public class Main {
         sb.append(idx).append("\n");
     }
 
-    private static void dijkstra(int room) {
-        Queue<Node> q = new PriorityQueue<>();
-        q.add(new Node(room, 0));
-        int[] dist = new int[N + 1];
-        Arrays.fill(dist, MAX);
-        dist[room] = 0;
-
-        while (!q.isEmpty()) {
-            Node node = q.poll();
-
-            for (Node next : graph.get(node.to)) {
-                int nd = dist[node.to] + next.weight;
-                if (dist[next.to] > nd) {
-                    dist[next.to] = nd;
-                    q.add(new Node(next.to, nd));
-                }
-            }
-        }
-
-        distMap.put(room, dist);
-    }
-
     private static int read() throws IOException {
         int c, n = System.in.read() & 15;
         while ((c = System.in.read()) > 32) {
             n = (n << 3) + (n << 1) + (c & 15);
         }
         return n;
-    }
-
-    public static class Node implements Comparable<Node> {
-
-        int to, weight;
-
-        public Node(int to, int weight) {
-            this.to = to;
-            this.weight = weight;
-        }
-
-        @Override
-        public int compareTo(Node o) {
-            return weight - o.weight;
-        }
     }
 }
