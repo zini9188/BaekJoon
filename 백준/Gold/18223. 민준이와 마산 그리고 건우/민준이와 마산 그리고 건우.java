@@ -9,10 +9,9 @@ public class Main {
     private static StringTokenizer st;
 
     public static void main(String[] args) throws IOException {
-        st = new StringTokenizer(br.readLine());
-        int V = Integer.parseInt(st.nextToken());
-        int E = Integer.parseInt(st.nextToken());
-        int P = Integer.parseInt(st.nextToken());
+        int V = read();
+        int E = read();
+        int P = read();
 
         List<List<Node>> graph = new ArrayList<>();
         for (int i = 0; i <= V; i++) {
@@ -20,10 +19,9 @@ public class Main {
         }
 
         for (int i = 0; i < E; i++) {
-            st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            int c = Integer.parseInt(st.nextToken());
+            int a = read();
+            int b = read();
+            int c = read();
             graph.get(a).add(new Node(b, c));
             graph.get(b).add(new Node(a, c));
         }
@@ -67,6 +65,14 @@ public class Main {
         }
 
         return dist;
+    }
+
+    private static int read() throws IOException {
+        int c, n = System.in.read() & 15;
+        while ((c = System.in.read()) > 32) {
+            n = (n << 3) + (n << 1) + (c & 15);
+        }
+        return n;
     }
 
     private static class Node implements Comparable<Node> {
