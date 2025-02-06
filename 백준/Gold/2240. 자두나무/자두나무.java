@@ -38,14 +38,14 @@ public class Main {
 
     private static int dp(int time, int count, int pos) {
         if (count < 0) {
-            return -987654321;
+            return -1;
         }
 
         if (time == T) {
             return 0;
         }
 
-        if (dp[pos][count][time] != -1) {
+        if (dp[pos][count][time] >= 0) {
             return dp[pos][count][time];
         }
 
