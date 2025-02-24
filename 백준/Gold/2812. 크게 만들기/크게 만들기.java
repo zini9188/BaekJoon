@@ -31,9 +31,10 @@ public class Main {
             K--;
         }
 
-        while (!stack.isEmpty()) {
-            sb.insert(0, stack.pop());
+        for (Integer element : stack) {
+            sb.append(element);
         }
+        
         bw.write(sb.toString());
         bw.close();
         br.close();
