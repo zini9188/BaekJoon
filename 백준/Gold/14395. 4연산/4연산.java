@@ -7,7 +7,6 @@ public class Main {
     private static final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     private static final StringBuilder sb = new StringBuilder();
     private static StringTokenizer st;
-    private static char[] operate = {'*', '+', '-', '/'};
 
     public static void main(String[] args) throws IOException {
         int s = read();
@@ -16,7 +15,7 @@ public class Main {
         if (s == t) {
             sb.append("0");
         } else {
-            sb.append(bfs(s, t));
+            sb.append(bfs((long)s, t));
         }
 
         bw.write(sb.toString());
@@ -24,8 +23,9 @@ public class Main {
         br.close();
     }
 
-    private static String bfs(int s, int t) {
+    private static String bfs(long s, int t) {
         Set<Long> set = new HashSet<>();
+        set.add(s);
 
         Queue<Node> q = new ArrayDeque<>();
         q.add(new Node(s, ""));
@@ -36,28 +36,36 @@ public class Main {
                 return node.str;
             }
 
-            for (int i = 0; i < 4; i++) {
-                long nn = calc(node.n, operate[i]);
-
+            long nn;
+            if (node.n <= 100000) {
+                nn = node.n * node.n;
                 if (!set.contains(nn)) {
-                    q.add(new Node(nn, node.str + operate[i]));
+                    q.add(new Node(nn, node.str + '*'));
                     set.add(nn);
                 }
             }
+
+            if (node.n <= 500000000) {
+                nn = node.n + node.n;
+                if (!set.contains(nn)) {
+                    q.add(new Node(nn, node.str + '+'));
+                    set.add(nn);
+                }
+            }
+
+            if (!set.contains(0L)) {
+                q.add(new Node(0L, node.str + '-'));
+                set.add(0L);
+            }
+
+            if (node.n != 0) {
+                if (!set.contains(1L)) {
+                    q.add(new Node(1L, node.str + '/'));
+                    set.add(1L);
+                }                
+            }
         }
         return "-1";
-    }
-
-    private static long calc(long n, char o) {
-        if (o == '*') {
-            return n * n;
-        } else if (o == '+') {
-            return n + n;
-        } else if (o == '-') {
-            return 0;
-        } else {
-            return 1;
-        }
     }
 
     private static int read() throws IOException {
