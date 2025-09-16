@@ -4,7 +4,7 @@ class Solution {
     static int N, M;
     static int[][] INFO;
     static int ANS = Integer.MAX_VALUE;
-    static Set<String> set;
+    static Set<List<Integer>> set;
     
     public int solution(int[][] info, int n, int m) {
         int answer = 0;
@@ -28,7 +28,7 @@ class Solution {
             return;
         }
         
-        String data = idx + ":" + n + ":" + m;
+        List<Integer> data = List.of(idx, n, m);
         if(set.contains(data)) {
             return;
         }
