@@ -1,5 +1,6 @@
 import java.io.*;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -12,30 +13,28 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         int N = readInt();
-        int[] arr = new int[N + 2];
-        long[] sum = new long[N + 2];
+        long[] arr = new long[N + 1];
+        List<Integer> index = new ArrayList<>();
+        long ans = 0;
         for (int i = 1; i <= N; i++) {
-            arr[i] = readInt();
-        }
-        arr[0] = arr[N + 1] > 0 ? 1 : -1;
-        arr[N + 1] = arr[1];
-
-        for (int i = 1; i <= N; i++) {
-            // 쪽방이 있는 경우 쪽방을 선택하는게 이득
-            if (arr[i] > 0) {
-                sum[i] = arr[i];
-            } else {
-                // 앞, 뒷방을 선택한 케이스 외에 모두 선택 가능함.
-                if (!(arr[i - 1] == -1 || arr[i + 1] == -1)) {
-                    arr[i] = -1;
-                    sum[i] = 1;
-                }
+            arr[i] = readLong();
+            if (arr[i] > 0) { // 쪽방을 갖고 있음
+                index.add(i);
+                ans += arr[i];
             }
         }
 
-        long ans = 0;
-        for (int i = 1; i <= N; i++) {
-            ans += sum[i];
+        if (index.isEmpty()) {
+            ans = N / 2;
+        } else {
+            for (int i = 0; i < index.size(); i++) {
+                if (i == index.size() - 1) {
+                    // 원형처리
+                    ans += (N - index.get(i) + index.get(0)) / 2;
+                } else {
+                    ans += (index.get(i + 1) - index.get(i)) / 2;
+                }
+            }
         }
 
         sb.append(ans).append("\n");
@@ -60,6 +59,21 @@ public class Main {
             System.in.read();
         }
 
+        return negative ? -n : n;
+    }
+
+    private static long readLong() throws IOException {
+        long c, n = System.in.read() & 15;
+        boolean negative = n == 13;
+        if (negative) {
+            n = 0;
+        }
+        while ((c = System.in.read()) > 32) {
+            n = (n << 3) + (n << 1) + (c & 15);
+        }
+        if (c == 13) {
+            System.in.read();
+        }
         return negative ? -n : n;
     }
 }
