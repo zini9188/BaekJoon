@@ -13,10 +13,12 @@ public class Main {
         long[] dp = new long[cipher.length() + 1];
         dp[cipher.length()] = 1;
         for (int length = cipher.length() - 1; length >= 0; length--) {
+            if (cipher.charAt(length) == '0') {
+                continue;
+            }
+            
             if (isOverTwoDigit(cipher, length)) {
                 dp[length] = (dp[length + 1] + dp[length + 2]) % MOD;
-            } else if (cipher.charAt(length) == '0') {
-                dp[length] = 0;
             } else {
                 dp[length] = dp[length + 1] % MOD;
             }
@@ -29,7 +31,7 @@ public class Main {
     }
 
     private static boolean isOverTwoDigit(String str, int index) {
-        if (index + 1 >= str.length() || str.charAt(index) == '0') {
+        if (index + 1 >= str.length()) {
             return false;
         }
         int num = Integer.parseInt(str.substring(index, index + 2));
