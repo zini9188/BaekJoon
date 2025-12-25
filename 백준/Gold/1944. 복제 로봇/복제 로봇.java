@@ -6,16 +6,16 @@ public class Main {
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     private static final StringBuilder sb = new StringBuilder();
-    private static int[] dx = {1, -1, 0, 0}, dy = {0, 0, 1, -1};
-    private static StringTokenizer st;
+    private static final int[] dx = {1, -1, 0, 0}, dy = {0, 0, 1, -1};
+    private static PriorityQueue<Edge> graph = new PriorityQueue<>();
+    private static int[][] maze;
 
     public static void main(String[] args) throws IOException {
-        st = new StringTokenizer(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        int[][] maze = new int[N][N];
-
+        maze = new int[N][N];
         List<int[]> point = new ArrayList<>();
 
         int idx = -1;
@@ -32,21 +32,19 @@ public class Main {
             }
         }
 
-        PriorityQueue<int[]> graph = new PriorityQueue<>(Comparator.comparingInt(o -> o[2]));
-
         int nodeCount = point.size();
 
         for (int i = 0; i < point.size(); i++) {
-            bfs(i, point.get(i), maze, graph);
+            bfs(i, point.get(i));
         }
 
-        sb.append(calcMove(nodeCount, graph));
+        sb.append(calcMove(nodeCount));
         bw.write(sb.toString());
         bw.close();
         br.close();
     }
 
-    private static int calcMove(int nodeCount, PriorityQueue<int[]> graph) {
+    private static int calcMove(int nodeCount) {
         int[] parent = new int[graph.size() + 1];
         for (int i = 0; i <= graph.size(); i++) {
             parent[i] = i;
@@ -55,9 +53,9 @@ public class Main {
         int dist = 0;
         int edgeCount = 0;
         while (!graph.isEmpty()) {
-            int[] poll = graph.poll();
-            if (union(parent, poll[0], poll[1])) {
-                dist += poll[2];
+            Edge poll = graph.poll();
+            if (union(parent, poll.from, poll.to)) {
+                dist += poll.cost;
                 edgeCount++;
             }
         }
@@ -82,7 +80,7 @@ public class Main {
         return true;
     }
 
-    private static void bfs(int idx, int[] p, int[][] maze, PriorityQueue<int[]> graph) {
+    private static void bfs(int idx, int[] p) {
         Queue<int[]> q = new ArrayDeque<>();
         q.add(new int[]{p[0], p[1], 0});
         boolean[][] visited = new boolean[maze.length][maze[0].length];
@@ -101,28 +99,25 @@ public class Main {
                     q.add(new int[]{nx, ny, poll[2] + 1});
                     if (maze[nx][ny] <= -1) {
                         int k = -(int) maze[nx][ny] - 1;
-                        graph.add(new int[]{idx, k, poll[2] + 1});
+                        graph.add(new Edge(idx, k, poll[2] + 1));
                     }
                 }
             }
         }
     }
 
-    private static int readInt() throws IOException {
-        int c, n = System.in.read() & 15;
-        boolean negative = n == 13;
-        if (negative) {
-            n = 0;
+    private static class Edge implements Comparable<Edge> {
+        int from, to, cost;
+
+        public Edge(int from, int to, int cost) {
+            this.from = from;
+            this.to = to;
+            this.cost = cost;
         }
 
-        while ((c = System.in.read()) > 32) {
-            n = (n << 3) + (n << 1) + (c & 15);
+        @Override
+        public int compareTo(Edge o) {
+            return this.cost - o.cost;
         }
-
-        if (c == 13) {
-            System.in.read();
-        }
-
-        return negative ? -n : n;
     }
 }
